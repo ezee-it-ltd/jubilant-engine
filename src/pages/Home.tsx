@@ -39,7 +39,7 @@ const Home = () => {
                 asChild
                 className="rounded-full px-8 py-6 text-base font-medium shadow-md hover:shadow-lg transition-shadow w-full sm:w-auto"
               >
-                <Link to="/join">
+                <Link to="/auth?mode=signup">
                   Join Grandma's Kitchen
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -51,7 +51,7 @@ const Home = () => {
                 asChild
                 className="rounded-full px-8 py-6 text-base font-medium w-full sm:w-auto"
               >
-                <Link to="/login">Login</Link>
+                <Link to="/auth">Login</Link>
               </Button>
             </div>
           </div>
@@ -160,7 +160,8 @@ const Home = () => {
                 asChild
                 className="rounded-full px-8 py-6 text-base font-medium shadow-md hover:shadow-lg transition-shadow w-full sm:w-auto"
               >
-                <Link to="/join">
+               <Link to="/auth?mode=signup">
+
                   Join Grandma's Kitchen
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -172,7 +173,7 @@ const Home = () => {
                 asChild
                 className="rounded-full px-6 py-6 text-base w-full sm:w-auto"
               >
-                <Link to="/login">Already a member? Login</Link>
+              <Link to="/auth">Already a member? Login</Link>
               </Button>
             </div>
           </div>
