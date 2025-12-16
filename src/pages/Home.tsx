@@ -1,14 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { useUserRole } from '@/hooks/useUserRole';
-import heroImage from '@/assets/hero-kitchen.jpg';
-import logo from '@/assets/grandmas-kitchen-logo.png';
-import { ChefHat, BookOpen, ShoppingBag, Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useState } from 'react';
 import { OrganizationSchema } from '@/components/StructuredData';
+import { ArrowRight, UtensilsCrossed, Sparkles, Heart, Leaf } from 'lucide-react';
 
 const Home = () => {
   const navigate = useNavigate();
