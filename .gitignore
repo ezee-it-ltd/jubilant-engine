@@ -26,3 +26,7 @@ dist-ssr
 # Local backups
 backups/
 src/app.tsx-bak
+
+# Local scratch / copies
+assets/
+src/pages/*copy*.tsx
