@@ -20,16 +20,22 @@ export interface Recipe {
 }
 
 // Updated to use WebP format from Supabase storage
-const chickenSoupImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110012058-chicken-soup.webp";
-const cookiesImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110012745-cookies.webp";
-const carrotJuiceImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110012990-carrot-juice.webp";
-const lentilSoupImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110013195-lentil-soup.webp";
-const applePieImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110013449-apple-pie.webp";
-const gardenSaladImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110013670-garden-salad.webp";
-const roastBeefDinnerImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110013907-roast-beef-dinner.webp";
-const legOfLambImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110014147-leg-of-lamb.webp";
-const roastPorkImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110014437-roast-pork.webp";
-const roastChickenImg = "https://xipgwsckilciddoqrfsj.supabase.co/storage/v1/object/public/recipe-images/static-1762110014708-roast-chicken.webp";
+
+// -----------------------------
+// Dynamic recipe image base URL
+// -----------------------------
+const STORAGE_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/recipe-images`;
+
+const chickenSoupImg = `${STORAGE_BASE}/static-1762110012058-chicken-soup.webp`;
+const cookiesImg = `${STORAGE_BASE}/static-1762110012745-cookies.webp`;
+const carrotJuiceImg = `${STORAGE_BASE}/static-1762110012990-carrot-juice.webp`;
+const lentilSoupImg = `${STORAGE_BASE}/static-1762110013195-lentil-soup.webp`;
+const applePieImg = `${STORAGE_BASE}/static-1762110013449-apple-pie.webp`;
+const gardenSaladImg = `${STORAGE_BASE}/static-1762110013670-garden-salad.webp`;
+const roastBeefDinnerImg = `${STORAGE_BASE}/static-1762110013907-roast-beef-dinner.webp`;
+const legOfLambImg = `${STORAGE_BASE}/static-1762110014147-leg-of-lamb.webp`;
+const roastPorkImg = `${STORAGE_BASE}/static-1762110014437-roast-pork.webp`;
+const roastChickenImg = `${STORAGE_BASE}/static-1762110014708-roast-chicken.webp`;
 
 export const recipes: Recipe[] = [
   {

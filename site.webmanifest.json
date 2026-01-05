@@ -1,0 +1,10 @@
+{
+  "name": "Grandma’s Kitchen",
+  "short_name": "Grandma’s Kitchen",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
