@@ -1,18 +1,23 @@
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './app'
-import './index.css'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
-const rootEl = document.getElementById('root')
-if (rootEl) {
-  createRoot(rootEl).render(
-    <React.StrictMode>
+import App from "./App";
+import "./index.css";
+
+const rootEl = document.getElementById("root") as HTMLElement | null;
+
+if (!rootEl) {
+  throw new Error("Root element #root not found. Check index.html has <div id='root'></div>.");
+}
+
+createRoot(rootEl).render(
+  <React.StrictMode>
+    <HelmetProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </React.StrictMode>
-  )
-} else {
-  console.error('Root element #root not found')
-}
+    </HelmetProvider>
+  </React.StrictMode>
+);

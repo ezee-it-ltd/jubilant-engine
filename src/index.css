@@ -1,13 +1,35 @@
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: #fff6eb;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #fff6eb; /* Light peach */
   color: #1b1b1b;
   margin: 0;
+  line-height: 1.6; /* Improves readability, unitless value ensures compatibility */
 }
 a {
   text-decoration: none;
   color: #4b6043;
 }
+a:focus-visible {
+  outline: 2px solid #4b6043;
+  outline-offset: 2px;
+}
+a:visited {
+  color: #6b8f5a;
+}
+a:focus-visible {
+  outline: 2px solid #4b6043;
+  outline-offset: 2px;
+}
 a:hover {
   text-decoration: underline;
+}
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
