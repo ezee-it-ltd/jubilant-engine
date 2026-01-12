@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
-import App from "./App";
+import App from "./app";
 import "./index.css";
 
 const rootEl = document.getElementById("root") as HTMLElement | null;
