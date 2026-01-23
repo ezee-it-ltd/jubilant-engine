@@ -1,5 +1,4 @@
 import { Routes, Route, Link } from "react-router-dom";
-
 import Home from "./pages/Home";
 import Kitchen from "./pages/Kitchen";
 import KitchenInventory from "./pages/KitchenInventory";
@@ -9,22 +8,20 @@ import Result from "./pages/Result";
 export default function App() {
   return (
     <div className="gmk-page">
-      {/* Header */}
       <header className="gmk-header">
         <Link to="/" className="gmk-brand">
           Grandma’s Kitchen
         </Link>
       </header>
 
-      {/* Main content */}
       <main className="gmk-container">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/kitchen" element={<Kitchen />} />
-          <Route path="/inventory" element={<KitchenInventory />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/result" element={<Result />} />
-        </Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/kitchen" element={<Kitchen />} />
+  <Route path="/inventory" element={<KitchenInventory />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/result" element={<Result />} />
+</Routes>
       </main>
     </div>
   );
