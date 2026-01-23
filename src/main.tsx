@@ -1,20 +1,22 @@
+import PageShell from "@/components/PageShell";
+
 import React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 import App from "./App";
 import "./index.css";
 
-const rootEl = document.getElementById("root") as HTMLElement | null;
+const rootElement = document.getElementById("root");
 
-if (!rootEl) {
+if (!rootElement) {
   throw new Error(
-    "Root element #root not found. Check index.html has <div id='root'></div>."
+    "Root element #root not found. Ensure index.html contains <div id='root'></div>."
   );
 }
 
-createRoot(rootEl).render(
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
@@ -23,4 +25,3 @@ createRoot(rootEl).render(
     </HelmetProvider>
   </React.StrictMode>
 );
-

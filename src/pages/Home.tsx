@@ -1,3 +1,5 @@
+import PageShell from "@/components/PageShell";
+
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
@@ -82,15 +84,15 @@ export default function Home() {
 
           <ul className="space-y-3 text-muted-foreground leading-relaxed">
             <li>
-              <span className="mr-2">🧺</span>
+              <span className="mr-2"> 🧺 </span>
               Open your inventory and pick a section (Cupboards / Fridge / Freezer)
             </li>
             <li>
-              <span className="mr-2">✍️</span>
+              <span className="mr-2"> ✍️ </span>
               Add what you already have (rough lists are fine)
             </li>
             <li>
-              <span className="mr-2">✅</span>
+              <span className="mr-2"> ✅ </span>
               Check it before you shop — stop duplicates
             </li>
           </ul>
