@@ -9,7 +9,9 @@ import "./index.css";
 const rootEl = document.getElementById("root") as HTMLElement | null;
 
 if (!rootEl) {
-  throw new Error("Root element #root not found. Check index.html has <div id='root'></div>.");
+  throw new Error(
+    "Root element #root not found. Check index.html has <div id='root'></div>."
+  );
 }
 
 createRoot(rootEl).render(
@@ -21,3 +23,4 @@ createRoot(rootEl).render(
     </HelmetProvider>
   </React.StrictMode>
 );
+
