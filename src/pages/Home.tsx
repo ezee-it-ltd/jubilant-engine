@@ -150,6 +150,9 @@ export default function Home() {
           </div>
 
           <p className="text-xs text-muted-foreground mt-3">Base Camp #1 — simple on purpose.</p>
+          <div className="text-xs opacity-60 mt-2">
+          Build: {import.meta.env.VITE_BUILD_ID ?? "no-build-id"}
+          </div>
         </section>
       </main>
     </div>
