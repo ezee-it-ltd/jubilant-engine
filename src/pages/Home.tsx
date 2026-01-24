@@ -18,7 +18,6 @@ export default function Home() {
       </Helmet>
 
       <div className="py-10">
-        {/* HERO */}
         <div className="gmk-hero">
           <img
             src="/hero-kitchen.jpg"
@@ -34,7 +33,6 @@ export default function Home() {
           fridge, and freezer — saved privately on this device.
         </p>
 
-        {/* Primary actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-4">
           <Button asChild size="lg" className="rounded-full px-8">
             <Link to="/inventory">
@@ -55,7 +53,6 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        {/* WHY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Why Grandma&apos;s Kitchen?</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -73,7 +70,6 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        {/* HOW IT WORKS */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">How it works</h2>
 
@@ -101,7 +97,6 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        {/* FOR YOU IF */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">This is for you if…</h2>
 
@@ -110,40 +105,43 @@ export default function Home() {
           </p>
 
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-  {[
-    {
-      bubble: "Have you ever bought it twice, love?",
-      img: "/for-you/bought-duplicate.png",
-      alt: "Shopping bag with items already owned",
-    },
-    {
-      bubble: "Less clutter. You don’t need another app.",
-      img: "/for-you/less-clutter.png",
-      alt: "Phone overflowing with app icons",
-    },
-    {
-      bubble: "No posting online — keep it in the house.",
-      img: "/for-you/no-account.png",
-      alt: "Phone with social icons crossed out next to notebook",
-    },
-    {
-      bubble: "Simple and quiet. That’s the way.",
-      img: "/for-you/simple-and-quiet.png",
-      alt: "Tea cup, book, candle, and calm desk scene",
-    },
-  ].map((c, idx) => (
-    <div key={c.bubble} className="gmk-foryou-card">
-      <div className="gmk-illus-wrap">
-        <img src={c.img} alt={c.alt} loading="lazy" className="gmk-illus" />
+            {[
+              {
+                bubble: "Have you ever bought it twice, love?",
+                img: "/for-you/bought-duplicate.png",
+                alt: "Shopping bag with items already owned",
+              },
+              {
+                bubble: "Less clutter. You don’t need another app.",
+                img: "/for-you/less-clutter.png",
+                alt: "Phone overflowing with app icons",
+              },
+              {
+                bubble: "No posting online — keep it in the house.",
+                img: "/for-you/no-account.png",
+                alt: "Phone with social icons crossed out next to notebook",
+              },
+              {
+                bubble: "Simple and quiet. That’s the way.",
+                img: "/for-you/simple-and-quiet.png",
+                alt: "Tea cup, book, candle, and calm desk scene",
+              },
+            ].map((c, idx) => (
+              <div key={c.bubble} className="gmk-foryou-card">
+                <div className="gmk-illus-wrap">
+                  <img src={c.img} alt={c.alt} loading="lazy" className="gmk-illus" />
 
-        {/* Bubble sits ON the card (attached) */}
-        <div className={`gmk-bubble gmk-bubble--overlay ${idx % 2 === 0 ? "left" : "right"}`}>
-          {c.bubble}
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+                  <div
+                    className={`gmk-bubble gmk-bubble--overlay ${
+                      idx % 2 === 0 ? "left" : "right"
+                    }`}
+                  >
+                    {c.bubble}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           <p className="text-muted-foreground leading-relaxed mt-5">
             If you want automation, syncing, or clever tricks — this isn&apos;t that. This is Base
@@ -153,7 +151,6 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        {/* PRIVACY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Your kitchen stays yours</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -167,7 +164,6 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        {/* CLOSE */}
         <section className="gmk-panel">
           <p className="text-lg leading-relaxed">
             <span className="font-serif font-bold">Grandma didn&apos;t need an app.</span>{" "}
@@ -176,19 +172,15 @@ export default function Home() {
 
           <div className="mt-4 flex flex-col sm:flex-row gap-6">
             <Button asChild size="lg" className="rounded-full px-8">
-              <Link to="/inventory"> Open My Inventory </Link>
+              <Link to="/inventory">Open My Inventory</Link>
             </Button>
 
             <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-              <Link to="/kitchen"> Ask Grandma </Link>
+              <Link to="/kitchen">Ask Grandma</Link>
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground mt-3">Base Camp #1 — simple on purpose.</p>
-
-          <div className="text-xs opacity-60 mt-2">
-            Build: {import.meta.env.VITE_BUILD_ID ?? "no-build-id"}
-          </div>
         </section>
       </div>
     </PageShell>

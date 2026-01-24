@@ -9,7 +9,7 @@
   --accent: #4b6043; /* sage/olive */
   --rule: rgba(0, 0, 0, 0.12);
 
-  /* layout (your “960px thought”) */
+  /* layout */
   --page-max: 960px;
   --pad-x: clamp(16px, 3vw, 42px);
   --pad-y: clamp(18px, 3vw, 46px);
@@ -25,9 +25,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-*, *::before, *::after {
-  box-sizing: inherit;
-}
+*, *::before, *::after { box-sizing: inherit; }
 
 body {
   margin: 0;
@@ -38,28 +36,11 @@ body {
 }
 
 /* ================= Global media safety ================= */
-/* Prevent runaway images anywhere */
+
 img {
   max-width: 100%;
   height: auto;
   display: block;
-}
-
-/* Keep illustrations tidy inside story panels */
-.gmk-panel img {
-  max-width: 100%;
-  height: auto;
-  max-height: 320px;        /* 👈 main fix: reduces huge images */
-  object-fit: contain;      /* don’t crop illustrations */
-  margin: 16px auto;        /* centres + gives breathing room */
-}
-
-/* Optional: make embedded images feel “placed” (nice for cartoon art) */
-.gmk-panel img {
-  border-radius: 16px;
-  background: rgba(255,255,255,0.6);
-  padding: 10px;
-  border: 1px solid rgba(0,0,0,0.10);
 }
 
 /* subtle “paper grain” without images */
@@ -71,7 +52,7 @@ img {
     linear-gradient(0deg, var(--paper), var(--paper));
 }
 
-/* global container: this is the ONE place controlling margins */
+/* global container: ONE place controlling margins */
 .gmk-container {
   max-width: var(--page-max);
   margin: 0 auto;
@@ -94,26 +75,17 @@ img {
   font-size: 15px;
 }
 
-.gmk-brand:hover {
-  text-decoration: underline;
-}
+.gmk-brand:hover { text-decoration: underline; }
 
 /* links */
-a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-/* storybook typography helpers you can reuse anywhere */
+/* typography helpers */
 .gmk-h1 {
   font-family: var(--serif);
   font-size: clamp(2.2rem, 4.8vw, 3.1rem);
@@ -132,27 +104,40 @@ a:focus-visible {
 .gmk-lead {
   font-size: 1.08rem;
   color: var(--ink-soft);
-  max-width: 56ch; /* “book column” readability */
+  max-width: 56ch;
   margin: 0 0 22px;
 }
 
-/* classic book divider line */
+/* divider line */
 .gmk-rule {
   border: 0;
   border-top: 1px solid var(--rule);
   margin: 28px 0;
 }
 
-/* “storybook card” surface (optional, feels like a page inset) */
+/* panel surface */
 .gmk-panel {
   background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
-  padding: 18px 18px;
+  padding: 18px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-/* decorative initial cap (Hans Christian Andersen-ish) */
+/* images inside normal panels (NOT the for-you cards) */
+.gmk-panel img:not(.gmk-illus) {
+  max-width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  margin: 16px auto;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.6);
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.10);
+}
+
+/* decorative initial cap */
 .gmk-dropcap::first-letter {
   float: left;
   font-family: var(--serif);
@@ -164,9 +149,7 @@ a:focus-visible {
 }
 
 /* hero */
-.gmk-hero {
-  margin: 10px 0 26px;
-}
+.gmk-hero { margin: 10px 0 26px; }
 
 .gmk-hero img {
   width: 100%;
@@ -177,124 +160,68 @@ a:focus-visible {
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
-/* For-you illustrations: consistent sizing across devices */
-.gmk-illus {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  margin: 0 auto;
-  max-height: 340px;
-}
-
-@media (max-width: 520px) {
-  .gmk-illus {
-    max-height: 420px; /* bigger on phone */
-  }
-}
-
-/* forms should feel like “ink on paper” */
-textarea, input {
-  width: 100%;
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.5;
-  padding: 12px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.15);
-  background: rgba(255,255,255,0.55);
-  color: var(--ink);
-}
-
-textarea:focus, input:focus {
-  outline: 2px solid rgba(75, 96, 67, 0.45);
-  outline-offset: 2px;
-}
-
-/* small screens */
-@media (max-width: 520px) {
-  .gmk-header {
-    padding-bottom: 6px;
-  }
-
-  /* On small screens, make panel images a bit shorter */
-  .gmk-panel img {
-    max-height: 240px;
-  }
-}
-/* ================= Speech bubbles (Grandma talking) ================= */
-
-/* ================= For-you card layout ================= */
+/* ================= FOR YOU cards (polished) ================= */
 
 .gmk-foryou-card {
-  /* keep the soft card look */
   background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  padding: 0;
+  overflow: hidden;
 }
 
-/* inner wrapper controls rounded corners for the image */
 .gmk-illus-wrap {
   position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  padding: 14px;
-  background: rgba(255,255,255,0.35);
+  padding: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.20);
 }
 
-/* illustration sizing */
 .gmk-illus {
   width: 100%;
   height: auto;
-  display: block;
   object-fit: contain;
-  margin: 0 auto;
   max-height: 360px; /* desktop/tablet */
+  border-radius: 16px;
+  background: rgba(255,255,255,0.70);
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.10);
 }
 
-@media (max-width: 520px) {
-  .gmk-illus {
-    max-height: 420px; /* bigger on phone */
-  }
-}
-
-/* ================= Speech bubbles (overlay version) ================= */
+/* ================= Speech bubbles (overlay) ================= */
 
 .gmk-bubble {
   display: inline-block;
-  max-width: 44ch;
   padding: 10px 12px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.88);
   border: 1px solid rgba(0,0,0,0.12);
   box-shadow: 0 8px 20px rgba(0,0,0,0.10);
   position: relative;
   font-size: 0.95rem;
   line-height: 1.4;
+  color: var(--ink);
 }
 
-/* Overlay on the image card */
 .gmk-bubble--overlay {
   position: absolute;
-  top: 14px;
-  max-width: min(44ch, 76%);
+  top: 12px;
+  max-width: min(44ch, 78%);
   z-index: 2;
 }
 
-/* left/right placement */
-.gmk-bubble--overlay.left { left: 14px; }
-.gmk-bubble--overlay.right { right: 14px; }
+.gmk-bubble--overlay.left { left: 12px; }
+.gmk-bubble--overlay.right { right: 12px; }
 
-/* Tail (kept INSIDE the card so it doesn't get clipped) */
+/* Tail */
 .gmk-bubble--overlay::after {
   content: "";
   position: absolute;
   bottom: -6px;
   width: 12px;
   height: 12px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.88);
   border: 1px solid rgba(0,0,0,0.12);
   transform: rotate(45deg);
 }
@@ -309,4 +236,73 @@ textarea:focus, input:focus {
   right: 18px;
   border-left: none;
   border-bottom: none;
+}
+
+/* forms */
+textarea, input {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.55);
+  color: var(--ink);
+}
+
+textarea:focus, input:focus {
+  outline: 2px solid rgba(75, 96, 67, 0.45);
+  outline-offset: 2px;
+}
+
+/* ================= Mobile ================= */
+
+@media (max-width: 520px) {
+  .gmk-header { padding-bottom: 6px; }
+
+  /* panel images smaller on phone (except for-you images) */
+  .gmk-panel img:not(.gmk-illus) {
+    max-height: 240px;
+  }
+
+  /* for-you illustrations larger on phone */
+  .gmk-illus {
+    max-height: 420px;
+  }
+
+  /* keep overlay bubble centered on phone for neatness */
+  .gmk-bubble--overlay.left,
+  .gmk-bubble--overlay.right {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    top: 10px;
+    max-width: 86%;
+  }
+}
+/* Story panels (big illustrations between sections) */
+.gmk-story {
+  display: grid;
+  gap: 10px;
+}
+
+.gmk-story-img {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.gmk-story-cap {
+  font-size: 0.95rem;
+  color: rgba(0,0,0,0.65);
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .gmk-story-img {
+    max-height: 420px;
+  }
 }
