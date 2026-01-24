@@ -7,7 +7,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="gmk-page">
+    <PageShell>
       <Helmet>
         <title>Grandma&apos;s Kitchen | What&apos;s already in your kitchen?</title>
         <meta
@@ -17,14 +17,7 @@ export default function Home() {
         <link rel="canonical" href="https://grandmaskitchen.org/" />
       </Helmet>
 
-      {/* Header (prevents duplicate “Grandma’s Kitchen” elsewhere) */}
-      <header className="gmk-header">
-        <Link to="/" className="gmk-brand" aria-label="Grandma's Kitchen Home">
-          Grandma&apos;s Kitchen
-        </Link>
-      </header>
-
-      <main className="gmk-container">
+      <div className="py-10">
         {/* HERO */}
         <div className="gmk-hero">
           <img
@@ -42,7 +35,7 @@ export default function Home() {
         </p>
 
         {/* Primary actions */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-4">
           <Button asChild size="lg" className="rounded-full px-8">
             <Link to="/inventory">
               Open My Inventory <ArrowRight className="ml-2 h-4 w-4" />
@@ -62,6 +55,7 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* WHY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Why Grandma&apos;s Kitchen?</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -79,20 +73,21 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* HOW IT WORKS */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">How it works</h2>
 
           <ul className="space-y-3 text-muted-foreground leading-relaxed">
             <li>
-              <span className="mr-2"> 🧺 </span>
+              <span className="mr-2">🧺</span>
               Open your inventory and pick a section (Cupboards / Fridge / Freezer)
             </li>
             <li>
-              <span className="mr-2"> ✍️ </span>
+              <span className="mr-2">✍️</span>
               Add what you already have (rough lists are fine)
             </li>
             <li>
-              <span className="mr-2"> ✅ </span>
+              <span className="mr-2">✅</span>
               Check it before you shop — stop duplicates
             </li>
           </ul>
@@ -106,16 +101,60 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* FOR YOU IF */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">This is for you if…</h2>
-          <ul className="space-y-2 text-muted-foreground leading-relaxed">
-            <li>• You&apos;ve ever bought something you already had</li>
-            <li>• You want less clutter, not more apps</li>
-            <li>• You like things simple and quiet</li>
-            <li>• You don&apos;t want another account to manage</li>
-          </ul>
 
-          <p className="text-muted-foreground leading-relaxed mt-4">
+          <p className="text-muted-foreground leading-relaxed mt-2">
+            If any of these sound like you, you&apos;re exactly who this was built for.
+          </p>
+
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {[
+    {
+      bubble: "Have you ever bought it twice, love?",
+      img: "/for-you/bought-duplicate.png",
+      alt: "Shopping bag with items already owned",
+    },
+    {
+      bubble: "Less clutter. You don’t need another app.",
+      img: "/for-you/less-clutter.png",
+      alt: "Phone overflowing with app icons",
+    },
+    {
+      bubble: "No posting online — keep it in the house.",
+      img: "/for-you/no-account.png",
+      alt: "Phone with social icons crossed out next to notebook",
+    },
+    {
+      bubble: "Simple and quiet. That’s the way.",
+      img: "/for-you/simple-and-quiet.png",
+      alt: "Tea cup, book, candle, and calm desk scene",
+    },
+  ].map((c, idx) => (
+    <div
+      key={c.bubble}
+      className="rounded-2xl border border-input bg-white/60 overflow-hidden"
+    >
+      <img
+        src={c.img}
+        alt={c.alt}
+        loading="lazy"
+        className="w-full h-auto block"
+      />
+
+      <div className="p-4">
+        <div className="gmk-bubble-row">
+          <div className={`gmk-bubble ${idx % 2 === 0 ? "left" : "right"}`}>
+            {c.bubble}
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+          <p className="text-muted-foreground leading-relaxed mt-5">
             If you want automation, syncing, or clever tricks — this isn&apos;t that. This is Base
             Camp.
           </p>
@@ -123,6 +162,7 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* PRIVACY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Your kitchen stays yours</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -136,6 +176,7 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* CLOSE */}
         <section className="gmk-panel">
           <p className="text-lg leading-relaxed">
             <span className="font-serif font-bold">Grandma didn&apos;t need an app.</span>{" "}
@@ -152,11 +193,12 @@ export default function Home() {
           </div>
 
           <p className="text-xs text-muted-foreground mt-3">Base Camp #1 — simple on purpose.</p>
+
           <div className="text-xs opacity-60 mt-2">
-          Build: {import.meta.env.VITE_BUILD_ID ?? "no-build-id"}
+            Build: {import.meta.env.VITE_BUILD_ID ?? "no-build-id"}
           </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }

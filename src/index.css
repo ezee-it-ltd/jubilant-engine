@@ -37,6 +37,31 @@ body {
   line-height: 1.7;
 }
 
+/* ================= Global media safety ================= */
+/* Prevent runaway images anywhere */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Keep illustrations tidy inside story panels */
+.gmk-panel img {
+  max-width: 100%;
+  height: auto;
+  max-height: 320px;        /* 👈 main fix: reduces huge images */
+  object-fit: contain;      /* don’t crop illustrations */
+  margin: 16px auto;        /* centres + gives breathing room */
+}
+
+/* Optional: make embedded images feel “placed” (nice for cartoon art) */
+.gmk-panel img {
+  border-radius: 16px;
+  background: rgba(255,255,255,0.6);
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.10);
+}
+
 /* subtle “paper grain” without images */
 .gmk-page {
   min-height: 100vh;
@@ -175,4 +200,65 @@ textarea:focus, input:focus {
   .gmk-header {
     padding-bottom: 6px;
   }
+
+  /* On small screens, make panel images a bit shorter */
+  .gmk-panel img {
+    max-height: 240px;
+  }
+}
+/* ================= Speech bubbles (Grandma talking) ================= */
+
+.gmk-bubble-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 18px 0 22px;
+}
+
+.gmk-bubble {
+  display: inline-block;
+  max-width: 52ch;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.70);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Left bubble */
+.gmk-bubble.left {
+  justify-self: start;
+}
+
+/* Right bubble */
+.gmk-bubble.right {
+  justify-self: end;
+}
+
+/* Bubble tails */
+.gmk-bubble.left::after,
+.gmk-bubble.right::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255,255,255,0.70);
+  border: 1px solid rgba(0,0,0,0.10);
+  transform: rotate(45deg);
+}
+
+.gmk-bubble.left::after {
+  left: 18px;
+  border-right: none;
+  border-top: none;
+}
+
+.gmk-bubble.right::after {
+  right: 18px;
+  border-left: none;
+  border-top: none;
 }
