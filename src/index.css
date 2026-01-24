@@ -177,6 +177,22 @@ a:focus-visible {
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
+/* For-you illustrations: consistent sizing across devices */
+.gmk-illus {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin: 0 auto;
+  max-height: 340px;
+}
+
+@media (max-width: 520px) {
+  .gmk-illus {
+    max-height: 420px; /* bigger on phone */
+  }
+}
+
 /* forms should feel like “ink on paper” */
 textarea, input {
   width: 100%;
@@ -208,57 +224,89 @@ textarea:focus, input:focus {
 }
 /* ================= Speech bubbles (Grandma talking) ================= */
 
-.gmk-bubble-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin: 18px 0 22px;
+/* ================= For-you card layout ================= */
+
+.gmk-foryou-card {
+  /* keep the soft card look */
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  padding: 0;
 }
+
+/* inner wrapper controls rounded corners for the image */
+.gmk-illus-wrap {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  padding: 14px;
+  background: rgba(255,255,255,0.35);
+}
+
+/* illustration sizing */
+.gmk-illus {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin: 0 auto;
+  max-height: 360px; /* desktop/tablet */
+}
+
+@media (max-width: 520px) {
+  .gmk-illus {
+    max-height: 420px; /* bigger on phone */
+  }
+}
+
+/* ================= Speech bubbles (overlay version) ================= */
 
 .gmk-bubble {
   display: inline-block;
-  max-width: 52ch;
-  padding: 12px 14px;
+  max-width: 44ch;
+  padding: 10px 12px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.70);
-  border: 1px solid rgba(0,0,0,0.10);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
   position: relative;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* Left bubble */
-.gmk-bubble.left {
-  justify-self: start;
+/* Overlay on the image card */
+.gmk-bubble--overlay {
+  position: absolute;
+  top: 14px;
+  max-width: min(44ch, 76%);
+  z-index: 2;
 }
 
-/* Right bubble */
-.gmk-bubble.right {
-  justify-self: end;
-}
+/* left/right placement */
+.gmk-bubble--overlay.left { left: 14px; }
+.gmk-bubble--overlay.right { right: 14px; }
 
-/* Bubble tails */
-.gmk-bubble.left::after,
-.gmk-bubble.right::after {
+/* Tail (kept INSIDE the card so it doesn't get clipped) */
+.gmk-bubble--overlay::after {
   content: "";
   position: absolute;
-  bottom: -8px;
-  width: 14px;
-  height: 14px;
-  background: rgba(255,255,255,0.70);
-  border: 1px solid rgba(0,0,0,0.10);
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.12);
   transform: rotate(45deg);
 }
 
-.gmk-bubble.left::after {
+.gmk-bubble--overlay.left::after {
   left: 18px;
   border-right: none;
-  border-top: none;
+  border-bottom: none;
 }
 
-.gmk-bubble.right::after {
+.gmk-bubble--overlay.right::after {
   right: 18px;
   border-left: none;
-  border-top: none;
+  border-bottom: none;
 }

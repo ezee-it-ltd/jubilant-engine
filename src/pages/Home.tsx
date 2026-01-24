@@ -132,22 +132,13 @@ export default function Home() {
       alt: "Tea cup, book, candle, and calm desk scene",
     },
   ].map((c, idx) => (
-    <div
-      key={c.bubble}
-      className="rounded-2xl border border-input bg-white/60 overflow-hidden"
-    >
-      <img
-        src={c.img}
-        alt={c.alt}
-        loading="lazy"
-        className="w-full h-auto block"
-      />
+    <div key={c.bubble} className="gmk-foryou-card">
+      <div className="gmk-illus-wrap">
+        <img src={c.img} alt={c.alt} loading="lazy" className="gmk-illus" />
 
-      <div className="p-4">
-        <div className="gmk-bubble-row">
-          <div className={`gmk-bubble ${idx % 2 === 0 ? "left" : "right"}`}>
-            {c.bubble}
-          </div>
+        {/* Bubble sits ON the card (attached) */}
+        <div className={`gmk-bubble gmk-bubble--overlay ${idx % 2 === 0 ? "left" : "right"}`}>
+          {c.bubble}
         </div>
       </div>
     </div>
@@ -183,12 +174,13 @@ export default function Home() {
             She needed a list.
           </p>
 
-          <div className="mt-4 flex flex-col sm:flex-row gap-3">
+          <div className="mt-4 flex flex-col sm:flex-row gap-6">
             <Button asChild size="lg" className="rounded-full px-8">
-              <Link to="/inventory">Open My Inventory</Link>
+              <Link to="/inventory"> Open My Inventory </Link>
             </Button>
+
             <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-              <Link to="/kitchen">Ask Grandma</Link>
+              <Link to="/kitchen"> Ask Grandma </Link>
             </Button>
           </div>
 
