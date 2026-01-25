@@ -43,7 +43,7 @@ img {
   display: block;
 }
 
-/* subtle “paper grain” without images */
+/* subtle “paper grain” */
 .gmk-page {
   min-height: 100vh;
   background:
@@ -52,14 +52,15 @@ img {
     linear-gradient(0deg, var(--paper), var(--paper));
 }
 
-/* global container: ONE place controlling margins */
+/* one container controls margins */
 .gmk-container {
   max-width: var(--page-max);
   margin: 0 auto;
   padding: 0 var(--pad-x) var(--pad-y);
 }
 
-/* header */
+/* ================= Header ================= */
+
 .gmk-header {
   max-width: var(--page-max);
   margin: 0 auto;
@@ -85,10 +86,11 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* typography helpers */
+/* ================= Typography helpers ================= */
+
 .gmk-h1 {
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 4.8vw, 3.1rem);
+  font-size: clamp(2.1rem, 4.8vw, 3.1rem);
   line-height: 1.12;
   margin: 0 0 12px;
   letter-spacing: -0.2px;
@@ -96,9 +98,9 @@ a:focus-visible {
 
 .gmk-h2 {
   font-family: var(--serif);
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.45rem, 3vw, 2rem);
   line-height: 1.2;
-  margin: 26px 0 10px;
+  margin: 0 0 10px;
 }
 
 .gmk-lead {
@@ -106,35 +108,6 @@ a:focus-visible {
   color: var(--ink-soft);
   max-width: 56ch;
   margin: 0 0 22px;
-}
-
-/* divider line */
-.gmk-rule {
-  border: 0;
-  border-top: 1px solid var(--rule);
-  margin: 28px 0;
-}
-
-/* panel surface */
-.gmk-panel {
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
-
-/* images inside normal panels (NOT the for-you cards) */
-.gmk-panel img:not(.gmk-illus) {
-  max-width: 100%;
-  height: auto;
-  max-height: 320px;
-  object-fit: contain;
-  margin: 16px auto;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.6);
-  padding: 10px;
-  border: 1px solid rgba(0,0,0,0.10);
 }
 
 /* decorative initial cap */
@@ -148,7 +121,50 @@ a:focus-visible {
   color: var(--accent);
 }
 
-/* hero */
+/* divider line */
+.gmk-rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 28px 0;
+}
+
+/* How it works list – calm, storybook style */
+.gmk-how {
+  list-style: none;        /* ❌ removes dots */
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.gmk-how li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;               /* 👈 space between emoji + text */
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.gmk-how-icon {
+  width: 1.4em;            /* keeps alignment tidy */
+  text-align: center;
+  flex-shrink: 0;
+  margin-top: 2px;         /* optical alignment */
+}
+
+/* ================= Panels ================= */
+
+.gmk-panel {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* ================= Hero ================= */
+
 .gmk-hero { margin: 10px 0 26px; }
 
 .gmk-hero img {
@@ -160,85 +176,90 @@ a:focus-visible {
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
-/* ================= FOR YOU cards (polished) ================= */
+/* ================= CTA + Print bar ================= */
 
-.gmk-foryou-card {
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  overflow: hidden;
-}
-
-.gmk-illus-wrap {
-  position: relative;
-  padding: 16px;
+.gmk-cta {
+  margin-top: 14px;
   display: grid;
-  place-items: center;
-  background: rgba(255,255,255,0.20);
+  gap: 14px;
+  align-items: start;
 }
 
-.gmk-illus {
+.gmk-printbar {
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.35);
+  border-radius: 16px;
+  padding: 12px 12px 10px;
+}
+
+/* icon + text spacing (fixes emoji/icon spacing nicely) */
+.gmk-printbar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* 👈 key */
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.gmk-printbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* 👈 spacing between pills */
+}
+
+.gmk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.65);
+  color: var(--accent);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.gmk-pill:hover {
+  background: rgba(255,255,255,0.90);
+  text-decoration: none;
+}
+
+.gmk-printbar-hint {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  color: rgba(0,0,0,0.55);
+}
+
+/* ================= Story panels (big illustrations between sections) ================= */
+
+.gmk-story {
+  display: grid;
+  gap: 12px;
+}
+
+.gmk-story-img {
   width: 100%;
   height: auto;
+  max-height: 560px;
   object-fit: contain;
-  max-height: 360px; /* desktop/tablet */
+  margin: 0 auto;
   border-radius: 16px;
-  background: rgba(255,255,255,0.70);
+  background: rgba(255,255,255,0.65);
   padding: 10px;
   border: 1px solid rgba(0,0,0,0.10);
 }
 
-/* ================= Speech bubbles (overlay) ================= */
-
-.gmk-bubble {
-  display: inline-block;
-  padding: 10px 12px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.88);
-  border: 1px solid rgba(0,0,0,0.12);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
-  position: relative;
+.gmk-story-cap {
   font-size: 0.95rem;
-  line-height: 1.4;
-  color: var(--ink);
+  color: rgba(0,0,0,0.68);
+  line-height: 1.5;
 }
 
-.gmk-bubble--overlay {
-  position: absolute;
-  top: 12px;
-  max-width: min(44ch, 78%);
-  z-index: 2;
-}
+/* ================= Forms ================= */
 
-.gmk-bubble--overlay.left { left: 12px; }
-.gmk-bubble--overlay.right { right: 12px; }
-
-/* Tail */
-.gmk-bubble--overlay::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  width: 12px;
-  height: 12px;
-  background: rgba(255,255,255,0.88);
-  border: 1px solid rgba(0,0,0,0.12);
-  transform: rotate(45deg);
-}
-
-.gmk-bubble--overlay.left::after {
-  left: 18px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.gmk-bubble--overlay.right::after {
-  right: 18px;
-  border-left: none;
-  border-bottom: none;
-}
-
-/* forms */
 textarea, input {
   width: 100%;
   font-family: var(--sans);
@@ -256,53 +277,154 @@ textarea:focus, input:focus {
   outline-offset: 2px;
 }
 
+/* ================= Print Inventory Page (Grandma sheet) ================= */
+
+.gmk-printpage {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.gmk-noprint { /* used to hide controls when printing */ }
+
+.gmk-print-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gmk-print-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.gmk-print-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.gmk-print-sub {
+  font-size: 0.92rem;
+  opacity: 0.75;
+  margin-top: 3px;
+}
+
+.gmk-print-rule {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,0.18);
+  margin: 14px 0 18px;
+}
+
+.gmk-print-sections {
+  display: grid;
+  gap: 16px;
+}
+
+.gmk-print-section {
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+}
+
+.gmk-print-h2 {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  margin: 0 0 10px;
+}
+
+.gmk-print-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.gmk-print-item {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.65);
+}
+
+/* printable checkbox */
+.gmk-print-check {
+  width: 14px;
+  height: 14px;
+  border: 1.6px solid rgba(0,0,0,0.75);
+  border-radius: 3px;
+  margin-top: 2px;
+  background: transparent;
+}
+
+.gmk-print-name {
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.gmk-print-muted {
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+.gmk-print-empty {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0,0,0,0.20);
+  background: rgba(255,255,255,0.35);
+}
+
+.gmk-print-footer {
+  margin-top: 16px;
+}
+
+/* ================= Real printing rules ================= */
+
+@media print {
+  .gmk-noprint,
+  nav,
+  header.gmk-header,
+  button,
+  a[href]:after {
+    display: none !important;
+  }
+
+  body { background: #fff !important; color: #000 !important; }
+  .gmk-page { background: #fff !important; }
+  .gmk-container { padding: 0 !important; max-width: 100% !important; }
+  .gmk-printpage { max-width: 100% !important; }
+
+  .gmk-print-section {
+    background: #fff !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .gmk-print-item {
+    background: #fff !important;
+    border-color: #000 !important;
+  }
+
+  .gmk-print-rule { border-top-color: #000 !important; }
+
+  @page { margin: 14mm; }
+}
+
 /* ================= Mobile ================= */
 
 @media (max-width: 520px) {
   .gmk-header { padding-bottom: 6px; }
-
-  /* panel images smaller on phone (except for-you images) */
-  .gmk-panel img:not(.gmk-illus) {
-    max-height: 240px;
-  }
-
-  /* for-you illustrations larger on phone */
-  .gmk-illus {
-    max-height: 420px;
-  }
-
-  /* keep overlay bubble centered on phone for neatness */
-  .gmk-bubble--overlay.left,
-  .gmk-bubble--overlay.right {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    top: 10px;
-    max-width: 86%;
-  }
-}
-/* Story panels (big illustrations between sections) */
-.gmk-story {
-  display: grid;
-  gap: 10px;
-}
-
-.gmk-story-img {
-  width: 100%;
-  height: auto;
-  max-height: 520px;
-  object-fit: contain;
-  margin: 0 auto;
-}
-
-.gmk-story-cap {
-  font-size: 0.95rem;
-  color: rgba(0,0,0,0.65);
-  line-height: 1.5;
-}
-
-@media (max-width: 520px) {
-  .gmk-story-img {
-    max-height: 420px;
-  }
+  .gmk-hero img { max-height: 250px; }
+  .gmk-story-img { max-height: 420px; padding: 8px; }
+  .gmk-pill { padding: 9px 12px; font-size: 0.95rem; }
 }

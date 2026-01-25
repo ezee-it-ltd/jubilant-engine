@@ -1,9 +1,47 @@
 import PageShell from "@/components/PageShell";
-
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Printer } from "lucide-react";
+
+type StoryBeat = {
+  img: string;
+  alt: string;
+  caption: string;
+};
+
+const STORY: StoryBeat[] = [
+  {
+    img: "/story/weve-all-been-here.png",
+    alt: "A messy fridge and food waste showing the problem of forgetting what we already have",
+    caption:
+      "We don’t waste food because we’re careless. We waste it because we forget what we already have.",
+  },
+  {
+    img: "/story/aha-moment.png",
+    alt: "A calm kitchen scene with a notebook and tea, suggesting a simple list and a quiet moment",
+    caption: "A quiet moment before you shop — write it down once, then trust your list.",
+  },
+  {
+    img: "/story/grandma-as-the-guide.png",
+    alt: "Grandma sitting at the table with a notebook titled Cupboards, Fridge, Freezer",
+    caption: "“Let’s keep it simple, love. Cupboards. Fridge. Freezer.”",
+  },
+  {
+    img: "/story/fairy-tale-ending.png",
+    alt: "Neat cupboards, fridge, and freezer with clear labels and dates, showing the organised result",
+    caption: "Neat shelves. Clear dates. No duplicates. That’s the happy ending.",
+  },
+];
+
+function StoryFigure({ beat }: { beat: StoryBeat }) {
+  return (
+    <figure className="gmk-panel gmk-story">
+      <img className="gmk-story-img" src={beat.img} alt={beat.alt} loading="lazy" />
+      <figcaption className="gmk-story-cap">{beat.caption}</figcaption>
+    </figure>
+  );
+}
 
 export default function Home() {
   return (
@@ -18,12 +56,9 @@ export default function Home() {
       </Helmet>
 
       <div className="py-10">
+        {/* HERO */}
         <div className="gmk-hero">
-          <img
-            src="/hero-kitchen.jpg"
-            alt="Grandma cooking in a warm kitchen"
-            loading="eager"
-          />
+          <img src="/hero-kitchen.jpg" alt="Grandma cooking in a warm kitchen" loading="eager" />
         </div>
 
         <h1 className="gmk-h1">What&apos;s already in your kitchen?</h1>
@@ -33,18 +68,44 @@ export default function Home() {
           fridge, and freezer — saved privately on this device.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-4">
+        {/* ONE primary action */}
+        <div className="mt-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <Button asChild size="lg" className="rounded-full px-8">
             <Link to="/inventory">
-              Open My Inventory <ArrowRight className="ml-2 h-4 w-4" />
+              Open My List <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
+        </div>
 
-          <Button asChild variant="outline" size="lg" className="rounded-full px-6">
-            <Link to="/kitchen">
-              Ask Grandma <Sparkles className="ml-2 h-4 w-4" />
+        {/* Print bar (single source of truth: /print routes) */}
+        <div className="mt-3 gmk-printbar" aria-label="Print options">
+        <div className="gmk-printbar-labelwrap">
+          <div className="gmk-printbar-sub">Your Notebook</div>
+
+          <div className="gmk-printbar-label">
+            <Printer className="h-4 w-4" />
+            <span>Print it!</span>
+          </div>
+        </div>
+
+          <div className="gmk-printbar-links">
+            <Link className="gmk-pill" to="/print/cupboards">
+              Cupboards
             </Link>
-          </Button>
+            <Link className="gmk-pill" to="/print/fridge">
+              Fridge
+            </Link>
+            <Link className="gmk-pill" to="/print/freezer">
+              Freezer
+            </Link>
+            <Link className="gmk-pill" to="/print/all">
+              All
+            </Link>
+          </div>
+
+          <p className="gmk-printbar-hint">
+            Prints a tidy checklist you can keep in the kitchen.
+          </p>
         </div>
 
         <p className="text-sm text-muted-foreground mt-3">
@@ -53,104 +114,61 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
+        {/* STORY 1 */}
+        <StoryFigure beat={STORY[0]} />
+
+        <hr className="gmk-rule" />
+
+        {/* WHY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Why Grandma&apos;s Kitchen?</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Most of us don&apos;t waste food because we&apos;re careless. We waste it because we
-            forget what we already have.
+            This solves one huge problem: you go to the shops — but you don’t actually know what you
+            already have.
           </p>
           <p className="text-muted-foreground leading-relaxed mt-3">
-            This is a calm place to write things down — before you go shopping, before you order
-            online, before you buy another one “just in case”.
+            Grandma’s Kitchen is Base Camp #1: simple on purpose. A calm list you trust.
           </p>
           <p className="text-muted-foreground leading-relaxed mt-3">
-            No scanning. No rules. No guilt. Just a list you trust.
+            No scanning. No upsells. No nonsense. Just less waste and fewer duplicates.
           </p>
         </section>
 
         <hr className="gmk-rule" />
 
+        {/* STORY 2 */}
+        <StoryFigure beat={STORY[1]} />
+
+        <hr className="gmk-rule" />
+
+        {/* HOW */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">How it works</h2>
 
-          <ul className="space-y-3 text-muted-foreground leading-relaxed">
-            <li>
-              <span className="mr-2">🧺</span>
-              Open your inventory and pick a section (Cupboards / Fridge / Freezer)
-            </li>
-            <li>
-              <span className="mr-2">✍️</span>
-              Add what you already have (rough lists are fine)
-            </li>
-            <li>
-              <span className="mr-2">✅</span>
-              Check it before you shop — stop duplicates
-            </li>
-          </ul>
-
-          <div className="mt-6">
-            <Button asChild className="rounded-full">
-              <Link to="/inventory">Open My Inventory</Link>
-            </Button>
-          </div>
+          <ul className="gmk-how">
+          <li>
+            <span className="gmk-how-icon">🧺</span>
+            <span>Choose a section: Cupboards / Fridge / Freezer</span>
+          </li>
+          <li>
+            <span className="gmk-how-icon">✍️</span>
+            <span>Add what you’ve already got (rough lists are fine)</span>
+          </li>
+          <li>
+            <span className="gmk-how-icon">✅</span>
+            <span>Check it before you shop — stop duplicates</span>
+          </li>
+        </ul>
         </section>
 
         <hr className="gmk-rule" />
 
-        <section className="gmk-panel">
-          <h2 className="gmk-h2">This is for you if…</h2>
-
-          <p className="text-muted-foreground leading-relaxed mt-2">
-            If any of these sound like you, you&apos;re exactly who this was built for.
-          </p>
-
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                bubble: "Have you ever bought it twice, love?",
-                img: "/for-you/bought-duplicate.png",
-                alt: "Shopping bag with items already owned",
-              },
-              {
-                bubble: "Less clutter. You don’t need another app.",
-                img: "/for-you/less-clutter.png",
-                alt: "Phone overflowing with app icons",
-              },
-              {
-                bubble: "No posting online — keep it in the house.",
-                img: "/for-you/no-account.png",
-                alt: "Phone with social icons crossed out next to notebook",
-              },
-              {
-                bubble: "Simple and quiet. That’s the way.",
-                img: "/for-you/simple-and-quiet.png",
-                alt: "Tea cup, book, candle, and calm desk scene",
-              },
-            ].map((c, idx) => (
-              <div key={c.bubble} className="gmk-foryou-card">
-                <div className="gmk-illus-wrap">
-                  <img src={c.img} alt={c.alt} loading="lazy" className="gmk-illus" />
-
-                  <div
-                    className={`gmk-bubble gmk-bubble--overlay ${
-                      idx % 2 === 0 ? "left" : "right"
-                    }`}
-                  >
-                    {c.bubble}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-muted-foreground leading-relaxed mt-5">
-            If you want automation, syncing, or clever tricks — this isn&apos;t that. This is Base
-            Camp.
-          </p>
-        </section>
+        {/* STORY 3 */}
+        <StoryFigure beat={STORY[2]} />
 
         <hr className="gmk-rule" />
 
+        {/* PRIVACY */}
         <section className="gmk-panel">
           <h2 className="gmk-h2">Your kitchen stays yours</h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -164,24 +182,45 @@ export default function Home() {
 
         <hr className="gmk-rule" />
 
-        <section className="gmk-panel">
-          <p className="text-lg leading-relaxed">
-            <span className="font-serif font-bold">Grandma didn&apos;t need an app.</span>{" "}
-            She needed a list.
+        {/* STORY 4 */}
+        <StoryFigure beat={STORY[3]} />
+
+        <hr className="gmk-rule" />
+
+        {/* CLOSE */}
+        <section className="gmk-panel gmk-close">
+      <div className="gmk-notebook-cta">
+        <img
+          src="/images/grandmas-shopping-list.png"
+          alt="Grandma writing a shopping list with a feather pen"
+          className="gmk-notebook-img"
+          loading="lazy"
+        />
+
+        <div className="gmk-notebook-text">
+          <p className="gmk-notebook-title">
+            Print your notebook now!
           </p>
 
-          <div className="mt-4 flex flex-col sm:flex-row gap-6">
-            <Button asChild size="lg" className="rounded-full px-8">
-              <Link to="/inventory">Open My Inventory</Link>
-            </Button>
+          <p className="gmk-notebook-sub">
+            A clean copy of everything you have — cupboards, fridge, freezer.
+          </p>
 
-            <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-              <Link to="/kitchen">Ask Grandma</Link>
-            </Button>
-          </div>
+          <Link to="/print/all" className="gmk-notebook-link">
+            ✒️ Print the full notebook
+          </Link>
 
-          <p className="text-xs text-muted-foreground mt-3">Base Camp #1 — simple on purpose.</p>
-        </section>
+          <a href="#top" className="gmk-backtotop">
+            ↑ Back to top
+          </a>
+        </div>
+      </div>
+
+      <p className="text-xs text-muted-foreground mt-4">
+        Base Camp #1 — simple on purpose.
+      </p>
+    </section>
+
       </div>
     </PageShell>
   );
