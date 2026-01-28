@@ -1,40 +1,23 @@
 import PageShell from "@/components/PageShell";
 import { Helmet } from "react-helmet-async";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Printer } from "lucide-react";
 
+import { migrateNotebookEndToEnd, type InventoryStateV1 } from "@/lib/notebookMigration";
+
 type LocationKey = "cupboard" | "fridge" | "freezer";
 type Scope = "cupboards" | "fridge" | "freezer" | "all";
 
-type InventoryItem = {
-  id: string;
-  item_name: string;
-  created_at: string;
-};
-
-type InventoryState = Record<LocationKey, InventoryItem[]>;
-
-const STORAGE_KEY = "gmk_inventory_v1";
+type InventoryState = InventoryStateV1;
 
 function emptyState(): InventoryState {
   return { cupboard: [], fridge: [], freezer: [] };
 }
 
-function loadState(): InventoryState {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return emptyState();
-  try {
-    const parsed = JSON.parse(raw) as Partial<InventoryState>;
-    return {
-      cupboard: Array.isArray(parsed.cupboard) ? parsed.cupboard : [],
-      fridge: Array.isArray(parsed.fridge) ? parsed.fridge : [],
-      freezer: Array.isArray(parsed.freezer) ? parsed.freezer : [],
-    };
-  } catch {
-    return emptyState();
-  }
+function isScope(x: unknown): x is Scope {
+  return x === "cupboards" || x === "fridge" || x === "freezer" || x === "all";
 }
 
 function titleForScope(scope: Scope) {
@@ -51,24 +34,68 @@ function sectionKeysForScope(scope: Scope): LocationKey[] {
   return ["cupboard", "fridge", "freezer"];
 }
 
+function labelForKey(k: LocationKey) {
+  if (k === "cupboard") return "Cupboards";
+  if (k === "fridge") return "Fridge";
+  return "Freezer";
+}
+
 export default function PrintInventory() {
   const navigate = useNavigate();
-  const params = useParams();
-  const scope = (params.scope as Scope) || "all";
+  const { scope: rawScope } = useParams<{ scope?: string }>();
 
-  const inv = useMemo(() => loadState(), []);
-  const keys = sectionKeysForScope(scope);
+  const scope: Scope = isScope(rawScope) ? rawScope : "all";
+
+  const [inv, setInv] = useState<InventoryState>(() => emptyState());
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Unified load (same source of truth as Inventory page)
+  useEffect(() => {
+    let alive = true;
+
+    migrateNotebookEndToEnd()
+      .then((res) => {
+        if (!alive) return;
+        setInv(res.notebook.inventory);
+      })
+      .catch(() => {
+        // silent: keep emptyState
+      })
+      .finally(() => {
+        if (!alive) return;
+        setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const keys = useMemo(() => sectionKeysForScope(scope), [scope]);
 
   const printable = useMemo(() => {
     return keys.map((k) => ({
       key: k,
-      label: k === "cupboard" ? "Cupboards" : k === "fridge" ? "Fridge" : "Freezer",
-      items: (inv[k] || []).slice().reverse(), // oldest first reads nicer on paper
+      label: labelForKey(k),
+      // oldest first reads nicer on paper
+      items: (inv[k] || []).slice().reverse(),
     }));
-  }, [inv, scope]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [inv, keys]);
 
-  const totalCount = printable.reduce((acc, s) => acc + s.items.length, 0);
-  const today = new Date().toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+  const totalCount = useMemo(
+    () => printable.reduce((acc, s) => acc + s.items.length, 0),
+    [printable]
+  );
+
+  const today = useMemo(
+    () =>
+      new Date().toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }),
+    []
+  );
 
   return (
     <PageShell>
@@ -95,10 +122,8 @@ export default function PrintInventory() {
           </Button>
         </div>
 
-        {/* Print header (shows on paper, can also show on screen) */}
-
+        {/* Print header */}
         <header className="gmk-print-header">
-          {/* Put your logo file here (recommend: /logo-gmk.png) */}
           <img className="gmk-print-logo" src="/icon/grandma-512.png" alt="Grandma’s Kitchen" />
           <div className="gmk-print-headtext">
             <div className="gmk-print-title">Grandma’s Kitchen — Inventory</div>
@@ -110,7 +135,9 @@ export default function PrintInventory() {
 
         <hr className="gmk-print-rule" />
 
-        {totalCount === 0 ? (
+        {loading ? (
+          <div className="gmk-print-empty">Loading your notebook…</div>
+        ) : totalCount === 0 ? (
           <div className="gmk-print-empty">
             Nothing in your list yet. Pop back and add a few items, love.
           </div>
@@ -125,19 +152,18 @@ export default function PrintInventory() {
                 ) : (
                   <ul className="gmk-print-list">
                     {sec.items.map((it) => (
-                        <li key={it.id} className="gmk-print-item">
+                      <li key={it.id} className="gmk-print-item">
                         <span className="gmk-print-check" aria-hidden="true" />
                         <span className="gmk-print-name">{it.item_name}</span>
-                        </li>
+                      </li>
                     ))}
-                    </ul>
+                  </ul>
                 )}
               </section>
             ))}
           </div>
         )}
 
-        {/* Print footer */}
         <footer className="gmk-print-footer">
           <div className="gmk-print-muted">
             Tip: keep it simple — write it down once, then check it before you shop.

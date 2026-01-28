@@ -1,10 +1,15 @@
 import PageShell from "@/components/PageShell";
-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Archive, Refrigerator, Snowflake, Trash2 } from "lucide-react";
+
+import {
+  migrateNotebookEndToEnd,
+  saveNotebookUnified,
+  type InventoryStateV1,
+} from "@/lib/notebookMigration";
 
 type Location = "cupboard" | "fridge" | "freezer";
 
@@ -14,37 +19,18 @@ type InventoryItem = {
   created_at: string;
 };
 
-type InventoryState = Record<Location, InventoryItem[]>;
-
-const STORAGE_KEY = "gmk_inventory_v1";
+type InventoryState = InventoryStateV1;
 
 function emptyState(): InventoryState {
   return { cupboard: [], fridge: [], freezer: [] };
 }
 
-function loadState(): InventoryState {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return emptyState();
-
-  try {
-    const parsed = JSON.parse(raw) as Partial<InventoryState>;
-    return {
-      cupboard: Array.isArray(parsed.cupboard) ? parsed.cupboard : [],
-      fridge: Array.isArray(parsed.fridge) ? parsed.fridge : [],
-      freezer: Array.isArray(parsed.freezer) ? parsed.freezer : [],
-    };
-  } catch {
-    return emptyState();
-  }
-}
-
-function saveState(state: InventoryState) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
 function makeId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
+
+const LOCAL_KEY = "gmk_inventory_v1";
+const LOCAL_BACKUP_KEY = "gmk_inventory_backup_before_restore";
 
 export default function KitchenInventory() {
   const navigate = useNavigate();
@@ -52,19 +38,34 @@ export default function KitchenInventory() {
   const [activeTab, setActiveTab] = useState<Location>("cupboard");
   const [newItem, setNewItem] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const [inv, setInv] = useState<InventoryState>(() => emptyState());
 
-  const [inv, setInv] = useState<InventoryState>(() => loadState());
   const grouped = useMemo(() => inv, [inv]);
 
-  function persist(next: InventoryState) {
+  useEffect(() => {
+    migrateNotebookEndToEnd()
+      .then((res) => {
+        setInv(res.notebook.inventory);
+        if (res.didMigrate) setMessage("Your notebook is up to date everywhere.");
+      })
+      .catch(() => {
+        // silent fail
+      });
+  }, []);
+
+  async function persist(next: InventoryState, msg?: string) {
     setInv(next);
-    saveState(next);
+    try {
+      await saveNotebookUnified(next);
+      if (msg) setMessage(msg);
+    } catch {
+      // UI still updates; keep calm message if provided
+      if (msg) setMessage(msg);
+    }
   }
 
   function tabLabel(loc: Location) {
-    if (loc === "cupboard") return "Cupboards";
-    if (loc === "fridge") return "Fridge";
-    return "Freezer";
+    return loc === "cupboard" ? "Cupboards" : loc === "fridge" ? "Fridge" : "Freezer";
   }
 
   function tabIcon(loc: Location) {
@@ -75,7 +76,6 @@ export default function KitchenInventory() {
 
   function addItem() {
     setMessage(null);
-
     const name = newItem.trim();
     if (!name) return;
 
@@ -90,49 +90,56 @@ export default function KitchenInventory() {
       [activeTab]: [item, ...inv[activeTab]],
     };
 
-    persist(next);
+    void persist(next, "Saved to your notebook.");
     setNewItem("");
-    setMessage("Saved on this device.");
   }
 
   function deleteItem(id: string) {
     setMessage(null);
-
     const next: InventoryState = {
       ...inv,
       [activeTab]: inv[activeTab].filter((x) => x.id !== id),
     };
-
-    persist(next);
+    void persist(next);
   }
 
   function clearAll() {
     setMessage(null);
-    const next = emptyState();
-    persist(next);
-    setMessage("All cleared.");
+    void persist(emptyState(), "Notebook cleared.");
+  }
+
+  function restoreFromLocal() {
+    setMessage(null);
+
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if (!raw) {
+      setMessage("No local copy found on this device.");
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as InventoryState;
+      localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(inv));
+      void persist(parsed, "Notebook restored from this device.");
+    } catch {
+      setMessage("Local copy could not be restored.");
+    }
   }
 
   return (
     <PageShell>
       <Helmet>
-        <title>Your Inventory | Grandma&apos;s Kitchen</title>
+        <title>Your Notebook | Grandma&apos;s Kitchen</title>
         <meta
           name="description"
-          content="Track what you have in your cupboards, fridge, and freezer."
+          content="Your cupboards, fridge, and freezer — in one calm notebook."
         />
         <link rel="canonical" href="https://grandmaskitchen.org/inventory" />
       </Helmet>
 
       <div className="py-10">
-        {/* Top actions */}
-        <div className="mb-8 flex items-center justify-between gap-3">
-          <Button
-            type="button"
-            variant="ghost"
-            className="rounded-xl"
-            onClick={() => navigate(-1)}
-          >
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <Button variant="ghost" className="rounded-xl" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -143,41 +150,27 @@ export default function KitchenInventory() {
           </Button>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-serif font-bold tracking-tight mb-3">
-          Your Kitchen Inventory
-        </h1>
+        <h1 className="text-3xl font-serif font-bold mb-2">Your Notebook</h1>
 
-        <p className="text-muted-foreground mb-2 leading-relaxed max-w-2xl">
-          Add items to your cupboards, fridge, and freezer so you always know what you have in the
-          house.
+        <p className="text-muted-foreground mb-4 max-w-xl">
+          This is your kitchen list — cupboards, fridge, and freezer — kept simple on purpose.
         </p>
 
-        <p className="text-xs text-muted-foreground mb-6 max-w-2xl">
-          Saved privately on this device. No login required.
-        </p>
-
-        {/* Status */}
         {message && (
-          <div className="mb-4 p-3 rounded-2xl border border-input bg-white/60 text-sm">
+          <div className="mb-4 p-3 rounded-xl border border-input bg-white/60 text-sm">
             {message}
           </div>
         )}
 
-        {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
           {(["cupboard", "fridge", "freezer"] as Location[]).map((loc) => {
-            const active = activeTab === loc;
+            const isActive = activeTab === loc;
             return (
               <button
                 key={loc}
                 type="button"
                 onClick={() => setActiveTab(loc)}
-                className={[
-                  "inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm transition",
-                  "bg-white/50 hover:bg-white/70",
-                  active ? "border-foreground/20 font-semibold" : "border-input opacity-90",
-                ].join(" ")}
+                className={["gmk-tab", `gmk-tab--${loc}`, isActive ? "is-active" : ""].join(" ")}
               >
                 {tabIcon(loc)}
                 {tabLabel(loc)}
@@ -186,12 +179,11 @@ export default function KitchenInventory() {
           })}
         </div>
 
-        {/* Add row */}
         <div className="gmk-panel">
           <div className="flex flex-col sm:flex-row gap-2">
             <input
-              className="flex-1 rounded-xl border border-input bg-background px-4 py-3 text-sm"
-              placeholder={`Add an item to your ${tabLabel(activeTab).toLowerCase()}...`}
+              className="flex-1 rounded-xl border border-input bg-white/70 px-4 py-3"
+              placeholder={`Add to ${tabLabel(activeTab).toLowerCase()}…`}
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
               onKeyDown={(e) => {
@@ -204,28 +196,34 @@ export default function KitchenInventory() {
           </div>
         </div>
 
-        {/* List */}
         <div className="mt-6 space-y-2">
           {grouped[activeTab].length === 0 ? (
-            <div className="text-sm text-muted-foreground">No items yet.</div>
+            <p className="text-sm text-muted-foreground">No items yet.</p>
           ) : (
             grouped[activeTab].map((i) => (
-              <div
-                key={i.id}
-                className="rounded-2xl border border-input bg-white/60 p-4 flex items-center justify-between gap-4"
-              >
-                <div className="font-medium">{i.item_name}</div>
+              <div key={i.id} className="gmk-inv-item rounded-2xl border border-input bg-white/60">
                 <Button
                   type="button"
-                  variant="ghost"
-                  className="rounded-xl"
+                  variant="outline"
+                  className="gmk-inv-delete"
                   onClick={() => deleteItem(i.id)}
                 >
                   Delete
                 </Button>
+                <div className="gmk-inv-name">{i.item_name}</div>
               </div>
             ))
           )}
+        </div>
+
+        <div className="mt-10 gmk-panel">
+          <h3 className="font-serif font-semibold mb-2">Safety copy</h3>
+          <p className="text-sm text-muted-foreground mb-4 max-w-xl">
+            If something ever looks wrong, you can restore the notebook saved on this device.
+          </p>
+          <Button variant="outline" className="rounded-full" onClick={restoreFromLocal}>
+            Restore from this device
+          </Button>
         </div>
       </div>
     </PageShell>

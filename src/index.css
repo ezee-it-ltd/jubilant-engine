@@ -130,7 +130,7 @@ a:focus-visible {
 
 /* How it works list – calm, storybook style */
 .gmk-how {
-  list-style: none;        /* ❌ removes dots */
+  list-style: none;        /* removes dots */
   padding: 0;
   margin: 12px 0 0;
   display: grid;
@@ -140,7 +140,7 @@ a:focus-visible {
 .gmk-how li {
   display: flex;
   align-items: flex-start;
-  gap: 10px;               /* 👈 space between emoji + text */
+  gap: 10px;               /* space between emoji + text */
   font-size: 1rem;
   line-height: 1.55;
   color: var(--ink-soft);
@@ -192,21 +192,39 @@ a:focus-visible {
   padding: 12px 12px 10px;
 }
 
-/* icon + text spacing (fixes emoji/icon spacing nicely) */
+/* NEW: wrapper for “Your Notebook” + Print label */
+.gmk-printbar-labelwrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.gmk-printbar-sub {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: rgba(0,0,0,0.65);
+  font-size: 0.95rem;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+}
+
+/* icon + text spacing */
 .gmk-printbar-label {
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* 👈 key */
+  gap: 8px; /* key spacing */
   font-family: var(--serif);
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 8px;
+  margin: 0; /* was margin-bottom; handled by labelwrap now */
 }
 
 .gmk-printbar-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; /* 👈 spacing between pills */
+  gap: 8px; /* spacing between pills */
 }
 
 .gmk-pill {
@@ -228,12 +246,12 @@ a:focus-visible {
 }
 
 .gmk-printbar-hint {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 0.82rem;
   color: rgba(0,0,0,0.55);
 }
 
-/* ================= Story panels (big illustrations between sections) ================= */
+/* ================= Story panels ================= */
 
 .gmk-story {
   display: grid;
@@ -266,15 +284,77 @@ textarea, input {
   font-size: 16px;
   line-height: 1.5;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 14px; /* slightly softer */
   border: 1px solid rgba(0,0,0,0.15);
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.65); /* a touch cleaner */
   color: var(--ink);
 }
 
 textarea:focus, input:focus {
   outline: 2px solid rgba(75, 96, 67, 0.45);
   outline-offset: 2px;
+}
+
+/* ================= Home “Print your notebook now” block ================= */
+
+.gmk-close { padding: 18px; }
+
+.gmk-notebook-cta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.gmk-notebook-img {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+}
+
+.gmk-notebook-text { text-align: left; }
+
+.gmk-notebook-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0 0 6px;
+}
+
+.gmk-notebook-sub {
+  margin: 0 0 12px;
+  color: rgba(0,0,0,0.68);
+}
+
+.gmk-notebook-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.gmk-notebook-link:hover { text-decoration: underline; }
+
+.gmk-backtotop {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* desktop layout for the notebook CTA */
+@media (min-width: 720px) {
+  .gmk-notebook-cta {
+    grid-template-columns: 240px 1fr;
+    gap: 18px;
+  }
+  .gmk-notebook-img {
+    max-width: 240px;
+  }
 }
 
 /* ================= Print Inventory Page (Grandma sheet) ================= */
@@ -386,6 +466,53 @@ textarea:focus, input:focus {
   margin-top: 16px;
 }
 
+/* ================= Inventory page polish helpers ================= */
+/* These are optional classes you can add later, but they also help if used. */
+
+.gmk-inv-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.gmk-inv-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.gmk-inv-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+}
+/* Inventory list rows: fixed delete column + flexible text */
+.gmk-inv-item {
+  display: grid;
+  grid-template-columns: 96px 1fr; /* fixed column for Delete */
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+}
+
+.gmk-inv-delete {
+  justify-self: start;
+  width: 96px;          /* matches the grid column */
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
+.gmk-inv-name {
+  font-weight: 500;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
 /* ================= Real printing rules ================= */
 
 @media print {
@@ -427,4 +554,232 @@ textarea:focus, input:focus {
   .gmk-hero img { max-height: 250px; }
   .gmk-story-img { max-height: 420px; padding: 8px; }
   .gmk-pill { padding: 9px 12px; font-size: 0.95rem; }
+
+  /* print header wrap nicely on small screens */
+  .gmk-printbar-labelwrap {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+/* ================= Rhythm polish ================= */
+
+/* Space between stacked panels */
+.gmk-panel + .gmk-panel {
+  margin-top: 2rem;
+}
+
+/* Keep inputs a little “paper” */
+.gmk-panel input {
+  background: rgba(255,255,255,0.75);
+}
+
+/* Don’t globally squash button line-height (it can harm shadcn buttons).
+   Keep this only for custom plain buttons if needed. */
+button {
+  line-height: normal;
+}
+
+/* ================= Inventory Tabs ================= */
+
+.gmk-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.15);
+  font-size: 0.95rem;
+  background: rgba(255,255,255,0.65);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* Individual pastel colours */
+.gmk-tab--cupboard {
+  background: rgba(120, 160, 120, 0.25); /* soft sage green */
+  border-color: rgba(120, 160, 120, 0.45);
+}
+
+.gmk-tab--fridge {
+  background: rgba(120, 150, 190, 0.25); /* calm blue */
+  border-color: rgba(120, 150, 190, 0.45);
+}
+
+.gmk-tab--freezer {
+  background: rgba(180, 215, 235, 0.35); /* ice blue */
+  border-color: rgba(160, 200, 225, 0.55);
+}
+
+/* Active state */
+.gmk-tab.is-active {
+  font-weight: 600;
+  background: rgba(255,255,255,0.9);
+}
+
+/* Hover (gentle, not shouty) */
+.gmk-tab:hover {
+  background: rgba(255,255,255,0.85);
+  text-decoration: none;
+}
+
+/* ================= Home: Notebook Actions ================= */
+
+.gmk-notebook-actions {
+  text-align: left;
+}
+
+/* Steps list */
+.gmk-notebook-steps {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 22px;
+  display: grid;
+  gap: 14px; /* 👈 clear breathing space */
+}
+
+.gmk-notebook-steps li {
+  display: grid;
+  gap: 4px;
+}
+
+.gmk-notebook-steps strong {
+  font-family: var(--serif);
+  font-weight: 700;
+}
+
+.gmk-notebook-steps span {
+  font-size: 0.95rem;
+  color: rgba(0,0,0,0.65);
+}
+
+/* CTA wrapper */
+.gmk-notebook-cta-wrap {
+  margin-top: 10px;
+}
+
+/* ================= Candy Floss Button ================= */
+
+.gmk-candy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #2f3a2f;
+  text-decoration: none;
+
+  background:
+    radial-gradient(circle at top left, #ffffff 0%, transparent 60%),
+    linear-gradient(135deg, #ffd6e7, #dff5ff);
+
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.gmk-candy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+  filter: brightness(1.03);
+  text-decoration: none;
+}
+
+.gmk-candy-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 6px 12px rgba(0,0,0,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.gmk-notebook-links {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+/*==================== Digital shopping list (calm click-to-tick) ====================*/
+.gmk-shop-grid{
+  margin-top: 16px;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 760px){
+  .gmk-shop-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+.gmk-shop-h3{
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+  display:flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.gmk-shop-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap: 10px;
+}
+
+.gmk-shop-item{
+  display:grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.gmk-shop-check{
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.8px solid rgba(0,0,0,.75);
+  background: transparent;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.gmk-shop-check.is-on{
+  background: rgba(75, 96, 67, .18);
+  box-shadow: inset 0 0 0 2px rgba(75,96,67,.35);
+}
+
+.gmk-shop-label.is-on{
+  opacity: .72;
+  text-decoration: line-through;
+}
+
+.gmk-shop-meta{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: .92rem;
+  color: rgba(0,0,0,.65);
+}
+
+.gmk-shop-clear{
+  border: 1px solid rgba(0,0,0,.14);
+  background: rgba(255,255,255,.55);
+  border-radius: 999px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.gmk-shop-clear:hover{
+  background: rgba(255,255,255,.75);
 }

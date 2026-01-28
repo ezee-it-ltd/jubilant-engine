@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grandma’s Kitchen — Shopping List (A5)</title>
+  <style>
+    :root{
+      --paper:#fff6eb;
+      --paper-deeper:#f6ead7;
+      --ink:#1b1b1b;
+      --ink-soft:#3a3a3a;
+      --accent:#4b6043;
+      --rule: rgba(0,0,0,.14);
+    }
+
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.35;
+    }
+
+    .sheet{
+      max-width: 620px;
+      margin: 18px auto;
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 18px;
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(0,0,0,0.035), transparent 60%),
+        radial-gradient(700px 420px at 90% 12%, rgba(0,0,0,0.03), transparent 55%),
+        linear-gradient(0deg, rgba(255,255,255,0.55), rgba(255,255,255,0.55));
+      box-shadow: 0 14px 42px rgba(0,0,0,.08);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .brand{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.6);
+    }
+
+    h1{
+      font-family: Georgia, "Iowan Old Style", Palatino, serif;
+      font-size: 1.35rem;
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .sub{
+      color: rgba(0,0,0,.62);
+      font-size: .9rem;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .meta{
+      text-align:right;
+      font-size: .85rem;
+      color: rgba(0,0,0,.62);
+      white-space: nowrap;
+    }
+
+    hr{
+      border:0;
+      border-top: 1px solid var(--rule);
+      margin: 12px 0 14px;
+    }
+
+    .quiet{
+      margin: 0 0 14px;
+      color: rgba(0,0,0,.68);
+      font-size: .96rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card{
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255,255,255,.55);
+    }
+
+    h2{
+      font-family: Georgia, "Iowan Old Style", Palatino, serif;
+      font-size: 1.03rem;
+      margin: 0 0 8px;
+      color: var(--ink);
+      display:flex;
+      align-items:baseline;
+      gap: 8px;
+    }
+
+    ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap: 8px;
+    }
+
+    li{
+      display:grid;
+      grid-template-columns: 16px 1fr;
+      gap: 10px;
+      align-items:start;
+    }
+
+    .box{
+      width: 14px;
+      height: 14px;
+      border: 1.6px solid rgba(0,0,0,.75);
+      border-radius: 3px;
+      margin-top: 2px;
+      background: transparent;
+    }
+
+    .note{
+      margin-top: 12px;
+      border: 1px dashed rgba(0,0,0,.22);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255,255,255,.45);
+    }
+
+    .note h2{ margin-bottom: 6px; }
+    .lines{
+      height: 84px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 18px,
+          rgba(0,0,0,.10) 18px,
+          rgba(0,0,0,.10) 19px
+        );
+      border-radius: 10px;
+      opacity: .8;
+    }
+
+    .foot{
+      margin-top: 10px;
+      font-size: .85rem;
+      color: rgba(0,0,0,.58);
+    }
+
+    /* PRINT */
+    @media print{
+      body{ background:#fff; }
+      .sheet{
+        margin:0;
+        max-width: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow:none;
+      }
+      @page { size: A5; margin: 10mm; }
+    }
+
+    /* Small screens (preview) */
+    @media (max-width: 560px){
+      .grid{ grid-template-columns: 1fr; }
+      .meta{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="brand">
+        <!-- Swap to your real logo path -->
+        <img class="logo" src="/icon/grandma-512.png" alt="Grandma’s Kitchen" />
+        <div>
+          <h1>🧺 My Shopping List</h1>
+          <div class="sub">A quiet, simple list — just like Grandma used.</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div><strong>Grandma’s Kitchen</strong></div>
+        <div>grandmaskitchen.org</div>
+      </div>
+    </header>
+
+    <hr />
+
+    <p class="quiet">
+      Keep it simple. Check the cupboards first. Buy what you’ll actually use.
+    </p>
+
+    <section class="grid">
+      <div class="card">
+        <h2>🥦 Fresh Produce</h2>
+        <ul>
+          <li><span class="box"></span><span>Apples</span></li>
+          <li><span class="box"></span><span>Bananas</span></li>
+          <li><span class="box"></span><span>Carrots</span></li>
+          <li><span class="box"></span><span>Potatoes</span></li>
+          <li><span class="box"></span><span>Onions</span></li>
+          <li><span class="box"></span><span>Leafy greens (spinach / cabbage)</span></li>
+          <li><span class="box"></span><span>Seasonal veg (what looks good today)</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>🥩 Fridge</h2>
+        <ul>
+          <li><span class="box"></span><span>Milk</span></li>
+          <li><span class="box"></span><span>Eggs</span></li>
+          <li><span class="box"></span><span>Butter</span></li>
+          <li><span class="box"></span><span>Cheese</span></li>
+          <li><span class="box"></span><span>Yogurt</span></li>
+          <li><span class="box"></span><span>Fresh meat or fish (2–3 meals only)</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>🧂 Cupboard</h2>
+        <ul>
+          <li><span class="box"></span><span>Flour</span></li>
+          <li><span class="box"></span><span>Rice or pasta</span></li>
+          <li><span class="box"></span><span>Tinned tomatoes</span></li>
+          <li><span class="box"></span><span>Beans or lentils</span></li>
+          <li><span class="box"></span><span>Cooking oil</span></li>
+          <li><span class="box"></span><span>Salt &amp; pepper</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>❄️ Freezer (only if needed)</h2>
+        <ul>
+          <li><span class="box"></span><span>Frozen vegetables</span></li>
+          <li><span class="box"></span><span>Frozen fruit</span></li>
+          <li><span class="box"></span><span>Bread (spare loaf)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="note">
+      <h2>✏️ Notes to myself</h2>
+      <div class="lines" aria-hidden="true"></div>
+      <div class="foot">Leave room for one small treat.</div>
+    </section>
+  </main>
+</body>
+</html>
