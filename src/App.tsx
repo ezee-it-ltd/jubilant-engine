@@ -15,3 +15,8 @@ export default function App() {
     </Routes>
   );
 }
+import { Routes, Route, Navigate } from "react-router-dom";
+
+...
+
+<Route path="*" element={<Navigate to="/" replace />} />
