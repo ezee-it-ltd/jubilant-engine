@@ -874,3 +874,202 @@ button {
   color: rgba(0,0,0,0.68);
   line-height: 1.65;
 }
+/* ================= Mach-01 Notebook tidy ================= */
+
+.gmk-notebook-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin: 18px 0 10px;
+}
+
+.gmk-backlink{
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.gmk-notebook-head{ text-align:right; }
+.gmk-title{
+  font-family: var(--serif);
+  font-size: clamp(2.0rem, 4vw, 3.0rem);
+  line-height: 1.05;
+  margin: 0;
+}
+.gmk-subtitle{
+  margin: 6px 0 0;
+  color: rgba(0,0,0,0.62);
+  font-size: 0.95rem;
+}
+
+.gmk-notebook-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin: 10px 0 18px;
+}
+
+.gmk-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.gmk-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* Card */
+.gmk-notebook-card{
+  padding: 18px;
+}
+
+/* Calm helper text */
+.gmk-muted{
+  color: rgba(0,0,0,0.62);
+  font-size: 0.95rem;
+}
+
+/* Empty state */
+.gmk-empty{
+  padding: 28px 12px;
+  text-align:center;
+}
+.gmk-empty-title{
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.7rem;
+  margin-bottom: 6px;
+}
+.gmk-empty-sub{
+  margin: 0 auto;
+  max-width: 52ch;
+  color: rgba(0,0,0,0.65);
+}
+
+/* List rows */
+.gmk-list{ display:grid; gap: 10px; margin-top: 14px; }
+
+.gmk-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.55);
+}
+
+.gmk-row-left{ min-width: 0; }
+
+.gmk-item-title{
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.gmk-expiry{
+  margin-top: 6px;
+  font-size: 0.92rem;
+  opacity: 0.75;
+}
+.gmk-expired{ opacity: 1; }
+
+.gmk-row-link{
+  margin-top: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.75;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gmk-row-link:hover{ opacity: 1; }
+
+/* “Need more” pill */
+.gmk-needmore{
+  white-space:nowrap;
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.75);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.gmk-needmore.is-on{
+  background: rgba(75, 96, 67, 0.14);
+  border-color: rgba(75,96,67,0.35);
+}
+
+/* Bottom bar */
+.gmk-bottom{
+  margin-top: 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+/* Mobile */
+@media (max-width: 640px){
+  .gmk-notebook-head{ text-align:left; }
+  .gmk-notebook-top{ flex-direction:column; align-items:flex-start; }
+  .gmk-row{ flex-direction:column; align-items:flex-start; }
+  .gmk-needmore{ margin-top: 6px; }
+}
+/* ================= Add Item Dialog ================= */
+
+.gmk-dialog {
+  max-width: 520px;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+
+  border-radius: 18px;
+  padding: 22px;
+
+  background: var(--paper);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+/* ================= Modal (Radix Dialog) ================= */
+
+.gmk-dialog-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+}
+
+.gmk-dialog-content{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+
+  background: var(--paper);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 18px;
+  padding: 22px;
+
+  box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+  z-index: 51;
+}
+
+.gmk-dialog-header{ margin-bottom: 12px; }
+.gmk-dialog-title{
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0;
+}
