@@ -783,3 +783,94 @@ button {
 .gmk-shop-clear:hover{
   background: rgba(255,255,255,.75);
 }
+@media print {
+  .no-print { display: none !important; }
+}
+/* ================= Mach-01 glue (keeps CSS in sync with current pages) ================= */
+
+/* Make sure the main content is always centered and readable */
+.gmk-page {
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.gmk-card {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.60);
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 22px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+
+/* Text helpers used by newer Home / buttons */
+.gmk-muted {
+  color: rgba(0,0,0,0.66);
+}
+
+/* Candy-floss button class (used when we set className="gmk-candy") */
+.gmk-candy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #2f3a2f;
+
+  background:
+    radial-gradient(circle at top left, #ffffff 0%, transparent 60%),
+    linear-gradient(135deg, #ffd6e7, #dff5ff);
+
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  text-decoration: none;
+}
+
+.gmk-candy:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+  filter: brightness(1.03);
+  text-decoration: none;
+}
+
+.gmk-candy:active {
+  transform: translateY(0);
+  box-shadow:
+    0 6px 12px rgba(0,0,0,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Small footer note */
+.gmk-footer-note {
+  margin-top: 18px;
+  font-size: 0.92rem;
+  color: rgba(0,0,0,0.55);
+}
+
+/* Your panels look a bit “too tall + empty” right now — tighten defaults */
+.gmk-panel {
+  padding: 16px;
+}
+
+@media (min-width: 720px) {
+  .gmk-panel {
+    padding: 22px;
+  }
+}
+.gmk-fineprint {
+  font-size: 0.92rem;
+  color: rgba(0,0,0,0.55);
+  margin: 12px 0 0;
+}
+.gmk-muted {
+  color: rgba(0,0,0,0.68);
+  line-height: 1.65;
+}

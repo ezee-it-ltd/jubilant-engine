@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 
-type StoryBeat = {
-  img: string;
-  alt: string;
-  caption: string;
-};
+type StoryBeat = { img: string; alt: string; caption: string };
 
 const STORY: StoryBeat[] = [
   {
@@ -54,7 +50,7 @@ export default function Home() {
         <link rel="canonical" href="https://grandmaskitchen.org/" />
       </Helmet>
 
-      <div id="top" className="py-10">
+      <div id="top" className="gmk-container">
         {/* HERO */}
         <div className="gmk-hero">
           <img src="/hero-kitchen.jpg" alt="Grandma cooking in a warm kitchen" loading="eager" />
@@ -67,7 +63,7 @@ export default function Home() {
           fridge, and freezer — written once, trusted everywhere.
         </p>
 
-        {/* ONE clear notebook panel */}
+        {/* Notebook panel */}
         <section className="gmk-panel gmk-notebook-actions">
           <h2 className="gmk-h2">Your Notebook</h2>
 
@@ -87,45 +83,42 @@ export default function Home() {
           </ul>
 
           <div className="gmk-notebook-cta-wrap">
-            <Link to="/inventory" className="gmk-candy-btn">
+            <Link to="/notebook" className="gmk-candy-btn">
               Open my notebook ✨
             </Link>
           </div>
 
           <div className="gmk-notebook-links">
             <Button asChild className="rounded-full px-6">
-              <Link to="/inventory">Read your notebook</Link>
+              <Link to="/notebook">Read your notebook</Link>
             </Button>
 
             <Button asChild variant="outline" className="rounded-full px-6">
-              <Link to="/inventory">Edit your notebook</Link>
+              <Link to="/notebook">Edit your notebook</Link>
             </Button>
 
             <Button asChild variant="outline" className="rounded-full px-6">
-              <Link to="/print/all">Print your notebook</Link>
+              <Link to="/print">Print your notebook</Link>
             </Button>
           </div>
         </section>
 
-        <p className="text-sm text-muted-foreground mt-3">
-          No login. No account. Nothing shared.
-        </p>
+        <p className="gmk-fineprint">No login. No account. Nothing shared.</p>
 
         <hr className="gmk-rule" />
-
         <StoryFigure beat={STORY[0]} />
         <hr className="gmk-rule" />
 
         <section className="gmk-panel">
           <h2 className="gmk-h2">Why Grandma&apos;s Kitchen?</h2>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="gmk-muted">
             This solves one huge problem: you go to the shops — but you don’t actually know what you
             already have.
           </p>
-          <p className="text-muted-foreground leading-relaxed mt-3">
+          <p className="gmk-muted" style={{ marginTop: 12 }}>
             Grandma’s Kitchen is Base Camp #1: simple on purpose. A calm list you trust.
           </p>
-          <p className="text-muted-foreground leading-relaxed mt-3">
+          <p className="gmk-muted" style={{ marginTop: 12 }}>
             No scanning. No upsells. No nonsense. Just fewer duplicates and less waste.
           </p>
         </section>
@@ -158,10 +151,10 @@ export default function Home() {
 
         <section className="gmk-panel">
           <h2 className="gmk-h2">Your kitchen stays yours</h2>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="gmk-muted">
             Your notebook is private. Available on your devices. Never sold, tracked, or shared.
           </p>
-          <p className="text-muted-foreground leading-relaxed mt-3">
+          <p className="gmk-muted" style={{ marginTop: 12 }}>
             Clear it if you wish — just like a real notebook.
           </p>
         </section>
@@ -183,7 +176,7 @@ export default function Home() {
               <p className="gmk-notebook-sub">
                 A clean copy of everything you have — cupboards, fridge, freezer.
               </p>
-              <Link to="/print/all" className="gmk-notebook-link">
+              <Link to="/print" className="gmk-notebook-link">
                 ✒️ Print the full notebook
               </Link>
               <a href="#top" className="gmk-backtotop">
@@ -192,7 +185,7 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="gmk-fineprint" style={{ marginTop: 16 }}>
             Base Camp #1 — simple on purpose.
           </p>
         </section>
