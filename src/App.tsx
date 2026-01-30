@@ -1,22 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-
-import Home from "./pages/Home";
-import Kitchen from "./pages/Kitchen";
-import KitchenInventory from "./pages/KitchenInventory";
-import PrintInventory from "@/pages/PrintInventory";
+import Home from "@/pages/Home";
+import Notebook from "@/pages/Notebook";
+import ShoppingList from "@/pages/ShoppingList";
+import PrintNotebook from "@/pages/PrintNotebook";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/kitchen" element={<Kitchen />} />
-      <Route path="/inventory" element={<KitchenInventory />} />
-      <Route path="/print/:scope" element={<PrintInventory />} />
+      <Route path="/notebook" element={<Notebook />} />
+      <Route path="/shopping-list" element={<ShoppingList />} />
+      <Route path="/print" element={<PrintNotebook />} />
     </Routes>
   );
 }
-import { Routes, Route, Navigate } from "react-router-dom";
-
-...
-
-<Route path="*" element={<Navigate to="/" replace />} />

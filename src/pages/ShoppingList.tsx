@@ -1,162 +1,88 @@
-import PageShell from "@/components/PageShell";
-import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-
-type SectionKey = "produce" | "fridge" | "cupboard" | "freezer";
-
-type Item = { id: string; label: string };
-type Section = { key: SectionKey; title: string; emoji: string; items: Item[] };
-
-const LIST: Section[] = [
-  {
-    key: "produce",
-    title: "Fresh Produce",
-    emoji: "🥦",
-    items: [
-      { id: "apples", label: "Apples" },
-      { id: "bananas", label: "Bananas" },
-      { id: "carrots", label: "Carrots" },
-      { id: "potatoes", label: "Potatoes" },
-      { id: "onions", label: "Onions" },
-      { id: "leafy", label: "Leafy greens (spinach / cabbage)" },
-      { id: "seasonal", label: "Seasonal veg (what looks good today)" },
-    ],
-  },
-  {
-    key: "fridge",
-    title: "Fridge",
-    emoji: "🥩",
-    items: [
-      { id: "milk", label: "Milk" },
-      { id: "eggs", label: "Eggs" },
-      { id: "butter", label: "Butter" },
-      { id: "cheese", label: "Cheese" },
-      { id: "yogurt", label: "Yogurt" },
-      { id: "meat", label: "Fresh meat or fish (for 2–3 meals only)" },
-    ],
-  },
-  {
-    key: "cupboard",
-    title: "Cupboard",
-    emoji: "🧂",
-    items: [
-      { id: "flour", label: "Flour" },
-      { id: "rice", label: "Rice or pasta" },
-      { id: "tomatoes", label: "Tinned tomatoes" },
-      { id: "beans", label: "Beans or lentils" },
-      { id: "oil", label: "Cooking oil" },
-      { id: "saltpepper", label: "Salt & pepper" },
-    ],
-  },
-  {
-    key: "freezer",
-    title: "Freezer (only if needed)",
-    emoji: "❄️",
-    items: [
-      { id: "frozveg", label: "Frozen vegetables" },
-      { id: "frozfruit", label: "Frozen fruit" },
-      { id: "bread", label: "Bread (spare loaf)" },
-    ],
-  },
-];
-
-const STORAGE_KEY = "gmk_shopping_ticks_v1";
+import { Button } from "@/components/ui/button";
+import { loadState, saveState } from "@/lib/gmk-storage";
 
 export default function ShoppingList() {
-  const [ticks, setTicks] = useState<Record<string, boolean>>({});
+  const [list, setList] = useState<string[]>([]);
+  const [ticked, setTicked] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setTicks(JSON.parse(raw));
-    } catch {
-      // ignore
-    }
+    const st = loadState();
+    setList(st.shoppingList);
   }, []);
 
-  function setAndSave(next: Record<string, boolean>) {
-    setTicks(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // ignore
-    }
+  const sorted = useMemo(() => {
+    return [...list].sort((a, b) => a.localeCompare(b));
+  }, [list]);
+
+  function toggle(name: string) {
+    setTicked((p) => ({ ...p, [name]: !p[name] }));
   }
 
-  function toggle(id: string) {
-    setAndSave({ ...ticks, [id]: !ticks[id] });
-  }
+  function clearTicked() {
+    // Remove ticked items from the shopping list (calm behaviour)
+    const remaining = list.filter((n) => !ticked[n]);
+    setList(remaining);
+    setTicked({});
 
-  function clearAll() {
-    setAndSave({});
+    const st = loadState();
+    saveState({ ...st, shoppingList: remaining });
   }
-
-  const total = useMemo(() => LIST.reduce((a, s) => a + s.items.length, 0), []);
-  const done = useMemo(() => Object.values(ticks).filter(Boolean).length, [ticks]);
 
   return (
-    <PageShell>
-      <Helmet>
-        <title>Shopping List | Grandma&apos;s Kitchen</title>
-        <meta name="description" content="A calm click-to-tick shopping list — no clutter." />
-        <link rel="canonical" href="https://grandmaskitchen.org/shopping-list" />
-      </Helmet>
+    <main className="gmk-page">
+      <div className="flex items-center justify-between gap-4">
+        <Link to="/notebook" className="text-sm font-semibold underline underline-offset-4">
+          ← Back to Notebook
+        </Link>
+        <main className="gmk-page">
+  <div className="gmk-container">
+    <h1 className="gmk-h1">My Shopping List</h1>
 
-      <div className="py-10">
-        <div className="gmk-panel">
-          <h1 className="gmk-h2" style={{ marginBottom: 6 }}>
-            🧺 My Shopping List
-          </h1>
-          <p className="text-muted-foreground" style={{ marginTop: 0 }}>
-            A quiet, simple list — just like Grandma used.
-          </p>
+    <div className="gmk-panel gmk-shop-panel">
+      ...
+    </div>
+  </div>
+</main>
 
-          <div className="gmk-shop-meta">
-            <span>{done}/{total} ticked</span>
-            <button type="button" className="gmk-shop-clear" onClick={clearAll}>
-              Clear ticks
-            </button>
+      <div className="mt-5 gmk-card p-5 sm:p-6">
+        {sorted.length === 0 ? (
+          <div className="py-8 text-center">
+            <div className="gmk-h1 text-2xl">Nothing on the list.</div>
+            <p className="gmk-muted mt-2">Use “Need more” inside your notebook.</p>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-2">
+            {sorted.map((name) => {
+              const isOn = !!ticked[name];
+              return (
+                <button
+                  key={name}
+                  className="w-full text-left rounded-xl border border-black/10 bg-white/55 px-4 py-4 text-lg font-semibold transition"
+                  onClick={() => toggle(name)}
+                  aria-pressed={isOn}
+                >
+                  <span className="mr-3">{isOn ? "☑" : "☐"}</span>
+                  <span className={isOn ? "opacity-50 line-through" : ""}>{name}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
-        <div className="gmk-shop-grid">
-          {LIST.map((sec) => (
-            <section key={sec.key} className="gmk-panel gmk-shop-card">
-              <h2 className="gmk-shop-h3">
-                <span aria-hidden="true">{sec.emoji}</span> {sec.title}
-              </h2>
-
-              <ul className="gmk-shop-list">
-                {sec.items.map((it) => (
-                  <li key={it.id} className="gmk-shop-item">
-                    <button
-                      type="button"
-                      onClick={() => toggle(it.id)}
-                      className={["gmk-shop-check", ticks[it.id] ? "is-on" : ""].join(" ")}
-                      aria-label={ticks[it.id] ? `Untick ${it.label}` : `Tick ${it.label}`}
-                    />
-                    <span className={["gmk-shop-label", ticks[it.id] ? "is-on" : ""].join(" ")}>
-                      {it.label}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-
-        <div className="gmk-panel" style={{ marginTop: 18 }}>
-          <h2 className="gmk-h2" style={{ marginBottom: 6 }}>
-            ✏️ Notes to myself
-          </h2>
-          <ul className="gmk-how" style={{ marginTop: 0 }}>
-            <li><span className="gmk-how-icon">✅</span><span>Check cupboards before buying</span></li>
-            <li><span className="gmk-how-icon">✅</span><span>Buy what I’ll actually use</span></li>
-            <li><span className="gmk-how-icon">✅</span><span>Keep it simple</span></li>
-            <li><span className="gmk-how-icon">🍬</span><span>Leave room for one small treat</span></li>
-          </ul>
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <Button variant="secondary" className="w-full sm:w-auto" onClick={() => window.print()}>
+            Print List
+          </Button>
+          <Button variant="outline" className="w-full sm:w-auto" onClick={clearTicked} disabled={sorted.length === 0}>
+            Clear ticked
+          </Button>
+          <Button asChild className="w-full sm:w-auto">
+            <Link to="/notebook">Back to Notebook</Link>
+          </Button>
         </div>
       </div>
-    </PageShell>
+    </main>
   );
 }

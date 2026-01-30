@@ -1065,11 +1065,22 @@ button {
   box-shadow: 0 24px 60px rgba(0,0,0,0.22);
   z-index: 51;
 }
-
 .gmk-dialog-header{ margin-bottom: 12px; }
 .gmk-dialog-title{
   font-family: var(--serif);
   font-weight: 700;
   font-size: 1.6rem;
   margin: 0;
+}
+/* Shopping list panel centring */
+.gmk-shop-panel {
+  max-width: 720px;
+  margin: 24px auto 0;
+}
+.gmk-shop-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 16px;
 }
