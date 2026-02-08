@@ -1,88 +1,175 @@
-import { Link } from "react-router-dom";
+import PageShell from "@/components/PageShell";
+import { Helmet } from "react-helmet-async";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { loadState, saveState } from "@/lib/gmk-storage";
 
+function keyOf(name: string) {
+  return name.trim().toLowerCase();
+}
+
 export default function ShoppingList() {
-  const [list, setList] = useState<string[]>([]);
+  const nav = useNavigate();
+
+  const [hydrated, setHydrated] = useState(false);
+  const [items, setItems] = useState<string[]>([]);
   const [ticked, setTicked] = useState<Record<string, boolean>>({});
 
+  // Load once
   useEffect(() => {
     const st = loadState();
-    setList(st.shoppingList);
+    setItems(st.shoppingList ?? []);
+    setHydrated(true);
   }, []);
 
-  const sorted = useMemo(() => {
-    return [...list].sort((a, b) => a.localeCompare(b));
-  }, [list]);
+  // Persist list changes only (ticks are intentionally device-only + not persisted)
+  useEffect(() => {
+    if (!hydrated) return;
+    const st = loadState();
+    saveState({ ...st, version: 1, shoppingList: items });
+  }, [hydrated, items]);
+
+  const sorted = useMemo(() => [...items].sort((a, b) => a.localeCompare(b)), [items]);
 
   function toggle(name: string) {
-    setTicked((p) => ({ ...p, [name]: !p[name] }));
+    const k = keyOf(name);
+    setTicked((prev) => ({ ...prev, [k]: !prev[k] }));
   }
 
-  function clearTicked() {
-    // Remove ticked items from the shopping list (calm behaviour)
-    const remaining = list.filter((n) => !ticked[n]);
-    setList(remaining);
+  function clearTicks() {
     setTicked({});
-
-    const st = loadState();
-    saveState({ ...st, shoppingList: remaining });
   }
+
+  function removeFromList(name: string) {
+    const k = keyOf(name);
+
+    setItems((prev) => prev.filter((x) => keyOf(x) !== k));
+    setTicked((prev) => {
+      const next = { ...prev };
+      delete next[k];
+      return next;
+    });
+  }
+
+  const doneCount = useMemo(() => Object.values(ticked).filter(Boolean).length, [ticked]);
+
+  const metaDateTime = useMemo(() => {
+    const d = new Date();
+    return d.toLocaleString(undefined, {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }, []);
 
   return (
-    <main className="gmk-page">
-      <div className="flex items-center justify-between gap-4">
-        <Link to="/notebook" className="text-sm font-semibold underline underline-offset-4">
-          ← Back to Notebook
-        </Link>
-        <main className="gmk-page">
-  <div className="gmk-container">
-    <h1 className="gmk-h1">My Shopping List</h1>
+    <PageShell>
+      <Helmet>
+        <title>Shopping List | Grandma&apos;s Kitchen</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
 
-    <div className="gmk-panel gmk-shop-panel">
-      ...
-    </div>
-  </div>
-</main>
+      <div className="py-10">
+        {/* Match the print-page width so it visually feels consistent */}
+        <div className="gmk-printpage">
+          {/* Toolbar (screen only) */}
+          <div className="gmk-print-toolbar gmk-noprint">
+            <Link to="/notebook" className="gmk-print-home">
+              ← Back to notebook
+            </Link>
 
-      <div className="mt-5 gmk-card p-5 sm:p-6">
-        {sorted.length === 0 ? (
-          <div className="py-8 text-center">
-            <div className="gmk-h1 text-2xl">Nothing on the list.</div>
-            <p className="gmk-muted mt-2">Use “Need more” inside your notebook.</p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+              <Button variant="outline" onClick={clearTicks}>
+                Clear ticks
+              </Button>
+
+              <Button variant="outline" onClick={() => nav("/print-shopping-list")}>
+                🖨️ Print Shopping List
+              </Button>
+
+              <Button variant="outline" onClick={() => nav("/print/all")}>
+                🖨️ Print Notebook
+              </Button>
+            </div>
           </div>
-        ) : (
-          <div className="space-y-2">
-            {sorted.map((name) => {
-              const isOn = !!ticked[name];
-              return (
-                <button
-                  key={name}
-                  className="w-full text-left rounded-xl border border-black/10 bg-white/55 px-4 py-4 text-lg font-semibold transition"
-                  onClick={() => toggle(name)}
-                  aria-pressed={isOn}
-                >
-                  <span className="mr-3">{isOn ? "☑" : "☐"}</span>
-                  <span className={isOn ? "opacity-50 line-through" : ""}>{name}</span>
+
+          {/* Header (screen) */}
+          <header className="gmk-print-header gmk-noprint">
+            <img className="gmk-print-logo" src="/images/grandma-head.png" alt="Grandma’s Kitchen" />
+            <div>
+              <div className="gmk-print-title">My Shopping List</div>
+              <div className="gmk-print-sub">
+                {sorted.length} item{sorted.length === 1 ? "" : "s"} · {doneCount} ticked · {metaDateTime} ·
+                {" "}grandmaskitchen.org
+              </div>
+            </div>
+          </header>
+
+          <hr className="gmk-print-rule gmk-noprint" />
+
+          {/* Content card */}
+          {sorted.length === 0 ? (
+            <div className="gmk-print-empty">
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>Nothing on the list yet.</div>
+              <div className="gmk-print-muted">
+                In your notebook, tap <strong>“Need more”</strong> to add items here.
+              </div>
+            </div>
+          ) : (
+            <section className="gmk-print-section">
+              <ul className="gmk-print-list">
+                {sorted.map((name) => {
+                  const on = !!ticked[keyOf(name)];
+                  return (
+                    <li key={name} className="gmk-print-item">
+                      <button
+                        type="button"
+                        className={["gmk-shop-check", on ? "is-on" : ""].join(" ")}
+                        aria-pressed={on}
+                        onClick={() => toggle(name)}
+                        title="Tick item"
+                      />
+                      <div>
+                        <div className={["gmk-print-name", on ? "gmk-print-muted" : ""].join(" ")}>
+                          {name}
+                        </div>
+
+                        <button
+                          type="button"
+                          className="mt-2 text-xs font-semibold underline underline-offset-4 opacity-70 hover:opacity-100 gmk-noprint"
+                          onClick={() => removeFromList(name)}
+                          title="Remove from shopping list"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="gmk-shop-meta gmk-noprint" style={{ marginTop: 14 }}>
+                <div>
+                  {sorted.length} item{sorted.length === 1 ? "" : "s"} · {doneCount} ticked
+                </div>
+
+                <button type="button" className="gmk-shop-clear" onClick={clearTicks}>
+                  Clear ticks
                 </button>
-              );
-            })}
-          </div>
-        )}
+              </div>
+            </section>
+          )}
 
-        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Button variant="secondary" className="w-full sm:w-auto" onClick={() => window.print()}>
-            Print List
-          </Button>
-          <Button variant="outline" className="w-full sm:w-auto" onClick={clearTicked} disabled={sorted.length === 0}>
-            Clear ticked
-          </Button>
-          <Button asChild className="w-full sm:w-auto">
-            <Link to="/notebook">Back to Notebook</Link>
-          </Button>
+          {/* Footer */}
+          <div className="gmk-print-footer">
+            © {new Date().getFullYear()} Grandma’s Kitchen · grandmaskitchen.org
+          </div>
         </div>
       </div>
-    </main>
+    </PageShell>
   );
 }
