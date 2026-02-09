@@ -1,4 +1,3 @@
-cat > src/pages/Home.tsx <<'EOF'
 import PageShell from "@/components/PageShell";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
