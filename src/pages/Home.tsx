@@ -1,7 +1,10 @@
+cat > src/pages/Home.tsx <<'EOF'
 import PageShell from "@/components/PageShell";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
+
+import heroKitchen from "@/assets/hero-kitchen.jpg";
 
 type StoryBeat = { img: string; alt: string; caption: string };
 
@@ -50,124 +53,78 @@ export default function Home() {
         <link rel="canonical" href="https://grandmaskitchen.org/" />
       </Helmet>
 
-      <div id="top" className="gmk-container">
-        {/* HERO */}
-        <div className="gmk-hero">
-          <img src="/hero-kitchen.jpg" alt="Grandma cooking in a warm kitchen" loading="eager" />
+      {/* HERO */}
+      <div id="top" className="gmk-hero">
+        <img src={heroKitchen} alt="Grandma cooking in a warm kitchen" loading="eager" />
+      </div>
+
+      <h1 className="gmk-h1">What&apos;s already in your kitchen?</h1>
+
+      <p className="gmk-lead gmk-dropcap">
+        Stop buying what you already have. Keep a simple list of what&apos;s in your cupboards, fridge, and freezer —
+        written once, trusted everywhere.
+      </p>
+
+      {/* Notebook panel */}
+      <section className="gmk-panel gmk-notebook-actions">
+        <h2 className="gmk-h2">Your Notebook</h2>
+
+        <ul className="gmk-notebook-steps">
+          <li>
+            <strong>Read</strong>
+            <span>Check what you already have before you shop</span>
+          </li>
+          <li>
+            <strong>Edit</strong>
+            <span>Add or remove items in seconds</span>
+          </li>
+          <li>
+            <strong>Print</strong>
+            <span>Keep a clean copy in the kitchen</span>
+          </li>
+        </ul>
+
+        <div className="gmk-notebook-cta-wrap">
+          <Link to="/notebook" className="gmk-candy-btn">
+            Open my notebook ✨
+          </Link>
         </div>
 
-        <h1 className="gmk-h1">What&apos;s already in your kitchen?</h1>
+        <div className="gmk-notebook-links">
+          <Button asChild className="rounded-full px-6">
+            <Link to="/notebook">Read your notebook</Link>
+          </Button>
 
-        <p className="gmk-lead gmk-dropcap">
-          Stop buying what you already have. Keep a simple list of what&apos;s in your cupboards,
-          fridge, and freezer — written once, trusted everywhere.
-        </p>
+          <Button asChild variant="outline" className="rounded-full px-6">
+            <Link to="/notebook">Edit your notebook</Link>
+          </Button>
 
-        {/* Notebook panel */}
-        <section className="gmk-panel gmk-notebook-actions">
-          <h2 className="gmk-h2">Your Notebook</h2>
+          <Button asChild variant="outline" className="rounded-full px-6">
+            <Link to="/print">Print your notebook</Link>
+          </Button>
+        </div>
+      </section>
 
-          <ul className="gmk-notebook-steps">
-            <li>
-              <strong>Read</strong>
-              <span>Check what you already have before you shop</span>
-            </li>
-            <li>
-              <strong>Edit</strong>
-              <span>Add or remove items in seconds</span>
-            </li>
-            <li>
-              <strong>Print</strong>
-              <span>Keep a clean copy in the kitchen</span>
-            </li>
-          </ul>
+      <p className="gmk-fineprint">No login. No account. Nothing shared.</p>
 
-          <div className="gmk-notebook-cta-wrap">
-            <Link to="/notebook" className="gmk-candy-btn">
-              Open my notebook ✨
-            </Link>
-          </div>
+      <hr className="gmk-rule" />
+      <StoryFigure beat={STORY[0]} />
+      <hr className="gmk-rule" />
 
-          <div className="gmk-notebook-links">
-            <Button asChild className="rounded-full px-6">
-              <Link to="/notebook">Read your notebook</Link>
-            </Button>
+      <StoryFigure beat={STORY[1]} />
 
-            <Button asChild variant="outline" className="rounded-full px-6">
-              <Link to="/notebook">Edit your notebook</Link>
-            </Button>
+      <hr className="gmk-rule" />
+      <StoryFigure beat={STORY[2]} />
+      <hr className="gmk-rule" />
 
-            <Button asChild variant="outline" className="rounded-full px-6">
-              <Link to="/print">Print your notebook</Link>
-            </Button>
-          </div>
-        </section>
+      <StoryFigure beat={STORY[3]} />
 
-        <p className="gmk-fineprint">No login. No account. Nothing shared.</p>
-
-        <hr className="gmk-rule" />
-        <StoryFigure beat={STORY[0]} />
-        <hr className="gmk-rule" />
-
-        <section className="gmk-panel">
-          <h2 className="gmk-h2">Why Grandma&apos;s Kitchen?</h2>
-          <p className="gmk-muted">
-            This solves one huge problem: you go to the shops — but you don’t actually know what you
-            already have.
-          </p>
-          <p className="gmk-muted" style={{ marginTop: 12 }}>
-            Grandma’s Kitchen is Base Camp #1: simple on purpose. A calm list you trust.
-          </p>
-          <p className="gmk-muted" style={{ marginTop: 12 }}>
-            No scanning. No upsells. No nonsense. Just fewer duplicates and less waste.
-          </p>
-        </section>
-
-        <hr className="gmk-rule" />
-        <StoryFigure beat={STORY[1]} />
-        <hr className="gmk-rule" />
-
-        <section className="gmk-panel">
-          <h2 className="gmk-h2">How it works</h2>
-          <ul className="gmk-how">
-            <li>
-              <span className="gmk-how-icon">🧺</span>
-              <span>Choose a section: Cupboards / Fridge / Freezer</span>
-            </li>
-            <li>
-              <span className="gmk-how-icon">✍️</span>
-              <span>Add what you’ve already got (rough lists are fine)</span>
-            </li>
-            <li>
-              <span className="gmk-how-icon">✅</span>
-              <span>Check it before you shop — stop duplicates</span>
-            </li>
-          </ul>
-        </section>
-
-        <hr className="gmk-rule" />
-        <StoryFigure beat={STORY[2]} />
-        <hr className="gmk-rule" />
-
-        <section className="gmk-panel">
-          <h2 className="gmk-h2">Your kitchen stays yours</h2>
-          <p className="gmk-muted">
-            Your notebook is private. Available on your devices. Never sold, tracked, or shared.
-          </p>
-          <p className="gmk-muted" style={{ marginTop: 12 }}>
-            Clear it if you wish — just like a real notebook.
-          </p>
-        </section>
-
-        <hr className="gmk-rule" />
-        <StoryFigure beat={STORY[3]} />
-        <hr className="gmk-rule" />
-
-        <section className="gmk-panel gmk-close">
+      <section className="gmk-panel gmk-close">
+        <div className="gmk-rail">
           <div className="gmk-notebook-cta">
             <img
-              src="/images/grandmas-shopping-list.png"
-              alt="Grandma writing a shopping list with a feather pen"
+              src="/images/grandma-head.png"
+              alt="Grandma’s Kitchen"
               className="gmk-notebook-img"
               loading="lazy"
             />
@@ -188,8 +145,9 @@ export default function Home() {
           <p className="gmk-fineprint" style={{ marginTop: 16 }}>
             Base Camp #1 — simple on purpose.
           </p>
-        </section>
-      </div>
+        </div>
+      </section>
     </PageShell>
   );
 }
+EOF
