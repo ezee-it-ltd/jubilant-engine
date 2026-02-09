@@ -110,41 +110,19 @@ export default function Home() {
       <hr className="gmk-rule" />
       <StoryFigure beat={STORY[0]} />
       <hr className="gmk-rule" />
-
       <StoryFigure beat={STORY[1]} />
-
       <hr className="gmk-rule" />
       <StoryFigure beat={STORY[2]} />
       <hr className="gmk-rule" />
-
       <StoryFigure beat={STORY[3]} />
+      <hr className="gmk-rule" />
 
       <section className="gmk-panel gmk-close">
         <div className="gmk-rail">
-          <div className="gmk-notebook-cta">
-            <img
-              src="/images/grandma-head.png"
-              alt="Grandma’s Kitchen"
-              className="gmk-notebook-img"
-              loading="lazy"
-            />
-            <div className="gmk-notebook-text">
-              <p className="gmk-notebook-title">Print your notebook now!</p>
-              <p className="gmk-notebook-sub">
-                A clean copy of everything you have — cupboards, fridge, freezer.
-              </p>
-              <Link to="/print" className="gmk-notebook-link">
-                ✒️ Print the full notebook
-              </Link>
-              <a href="#top" className="gmk-backtotop">
-                ↑ Back to top
-              </a>
-            </div>
-          </div>
-
-          <p className="gmk-fineprint" style={{ marginTop: 16 }}>
-            Base Camp #1 — simple on purpose.
-          </p>
+          <p className="gmk-fineprint">Base Camp #1 — simple on purpose.</p>
+          <a href="#top" className="gmk-backtotop">
+            ↑ Back to top
+          </a>
         </div>
       </section>
     </PageShell>
